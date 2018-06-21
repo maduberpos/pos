@@ -102,9 +102,8 @@
             .catch()
             .finally(function() {
                 var totalsale = 0;
-                cashin_outService.cashout_amount(vm.cashout_data.cashin_id).then(function(responce) {
+                cashin_outService.cashout_amount(LocalStorage.get('cashin_id')).then(function(responce) {
                     totalsale = responce.data.data;
-                    console.log(totalsale)
                     vm.total_tax = totalsale.tax;
                     vm.sub_total = totalsale.subtotal;
                     vm.total_discount = totalsale.discount;
@@ -112,6 +111,7 @@
                     console.log(vm.cashin_amount);
                     vm.total_cash = vm.total_sale + vm.cashin_amount;
                     angular.forEach(totalsale.sales_by_payment_method, function(methods) {
+                        console.log(methods);
                         if (methods.payment_method === 'cash') {
                             vm.sale_by_cash = methods.sale;
                         }
