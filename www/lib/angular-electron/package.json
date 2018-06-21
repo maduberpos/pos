@@ -1,0 +1,58 @@
+{
+  "_from": "angular-electron",
+  "_id": "angular-electron@0.2.1",
+  "_inBundle": false,
+  "_integrity": "sha1-JoG85SaSBloIXghyoFpQQoIfaNw=",
+  "_location": "/angular-electron",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "angular-electron",
+    "name": "angular-electron",
+    "escapedName": "angular-electron",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/angular-electron/-/angular-electron-0.2.1.tgz",
+  "_shasum": "2681bce52692065a085e0872a05a5042821f68dc",
+  "_spec": "angular-electron",
+  "_where": "/Applications/AppsDesktop/maduber_pos ele",
+  "author": {
+    "name": "Oz Sayag"
+  },
+  "bugs": {
+    "url": "https://github.com/ozsay/angular-electron/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "angular": "^1.2.29"
+  },
+  "deprecated": false,
+  "description": "angularjs helpers for electron apps",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-insert": "^0.5.0",
+    "gulp-uglify": "^1.4.2"
+  },
+  "homepage": "https://github.com/ozsay/angular-electron",
+  "keywords": [
+    "angular",
+    "angularjs",
+    "electron"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "angular-electron",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ozsay/angular-electron.git"
+  },
+  "version": "0.2.1"
+}

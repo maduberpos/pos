@@ -1,0 +1,170 @@
+<ion-view view-title="{{vm.venue_detail.name}} - Settings" ng-controller="settingsCtrl as vm" class="Setting" ng-init="vm.tab = 1">
+
+    <ion-content class="padding" overflow-scroll="true">
+        <div class="row">
+            <div class="col col-25" id="pos-customers">
+                <ul class="list">
+                    <li class="card" ng-click="vm.printer_detail('billing_printer')" ng-class="{active: vm.printer_type=='billing_printer'}">
+                        <a class="item">
+                            <h3><strong>Billing Printer</strong></h3>
+                        </a>
+                    </li>
+                    <li class="card" ng-click="vm.printer_detail('kot_printer')" ng-class="{active: vm.printer_type=='kot_printer'}">
+                        <a class="item">
+                            <h3><strong>KOT Printer</strong></h3>
+                        </a>
+                    </li>
+                    <li class="card" ng-click="vm.printer_detail('notification_setting')" ng-class="{active: vm.printer_type=='notification_setting'}">
+                        <a class="item">
+                            <h3><strong>Notification Setting</strong></h3>
+                        </a>
+                    </li>
+                    <li class="card" ng-click="vm.printer_detail('server_config')" ng-class="{active: vm.printer_type=='server_config'}">
+                        <a class="item">
+                            <h3><strong>Server Configuration</strong></h3>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+            <div ng-if="vm.printer_type=='billing_printer'" class="col col-75 card printer-detail">
+                <div class="printer-detail-header">
+                    <h2>Printer</h2>
+                </div>
+
+                <div class="">
+                    <label class="item item-input">
+                    <span class="input-label">Printer ID/Name</span>
+                    <select ng-model="vm.billing_printer.printer_name">
+                        <option value="">Select Printer</option>
+                        <option ng-repeat="printer in vm.availablePrinter" value="{{printer.name}}">{{printer.name}}</option>
+                    </select>
+				  </label>
+                    <div class="my-stepper-label">
+                        Number of Prints
+                    </div>
+                    <div class="my-stepper">
+                        <div rn-stepper min="1" max="10" ng-model="vm.billing_printer.no_of_prints"></div>
+                    </div>
+                    <div class="clear clearfix"></div>
+                    <label class="item item-input">
+				    <span class="input-label">Header</span>
+				    <input type="text" class="input-text" ng-model="vm.billing_printer.printer_header">
+				  </label>
+                    <label class="item item-input">
+				    <span class="input-label">Footer</span>
+				    <input type="text" class="input-text" ng-model="vm.billing_printer.printer_footer">
+                  </label>
+                    <div class="item text-center">
+                        <button class="button button-balanced" ng-click="vm.save_printer_detail('billing_printer')">Save Billing Printer</button>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="vm.printer_type=='kot_printer'" class="col col-75 card printer-detail">
+                <div class="printer-detail-header">
+                    <h2>Printer</h2>
+                </div>
+
+                <div class="">
+                    <label class="item item-input">
+                    <span class="input-label">Printer ID/Name</span>
+                    <select ng-model="vm.kot_printer.printer_name">
+                            <option value="">Select Printer</option>
+                            <option ng-repeat="printer in vm.availablePrinter" value="{{printer.name}}">{{printer.name}}</option>
+                    </select>
+					
+				</label>
+                    <div class="my-stepper-label">
+                        Number of Prints
+                    </div>
+                    <div class="my-stepper">
+                        <div rn-stepper min="1" max="10" ng-model="vm.kot_printer.no_of_prints"></div>
+                    </div>
+                    <div class="clear clearfix"></div>
+                    <label class="item item-input">
+					<span class="input-label">Header</span>
+					<input type="text" class="input-text" ng-model="vm.kot_printer.printer_header">
+				</label>
+                    <label class="item item-input">
+					<span class="input-label">Footer</span>
+					<input type="text" class="input-text" ng-model="vm.kot_printer.printer_footer">
+                </label>
+                    <div class="item text-center">
+                        <button class="button button-balanced" ng-click="vm.save_printer_detail('kot_printer')">Save Kot Printer</button>
+                    </div>
+
+                </div>
+            </div>
+            <div ng-if="vm.printer_type=='notification_setting'" class="col col-75 card printer-detail">
+                <div class="printer-detail-header">
+                    <h2>Notification</h2>
+                </div>
+                <ul class="list">
+
+                    <li class="item item-toggle">
+                        Online Order Notification
+                        <label class="toggle toggle-energized">
+                         <input type="checkbox" ng-model="vm.order_notification" ng-checked="vm.order_notification == true" ng-change="vm.orderNotification(vm.order_notification)">
+                         <div class="track">
+                           <div class="handle"></div>
+                         </div>
+                       </label>
+                    </li>
+
+                    <li class="item item-toggle">
+                        Online Reservation Notification
+                        <label class="toggle toggle-positive">
+                         <input type="checkbox"  ng-model="vm.reservation_notification" ng-checked="vm.reservation_notification == true" ng-change="vm.reservationNotification(vm.reservation_notification)">
+                         <div class="track">
+                           <div class="handle"></div>
+                         </div>
+                       </label>
+                    </li>
+                    <li class="item item-toggle">
+                        Customer Register Notification
+                        <label class="toggle toggle-calm">
+                         <input type="checkbox" ng-model="vm.customer_notification" ng-checked="vm.customer_notification == true" ng-change="vm.customerNotification(vm.customer_notification)">
+                         <div class="track">
+                           <div class="handle"></div>
+                         </div>
+                       </label>
+                    </li>
+                    <li class="item item-toggle">
+                        KOT Notification
+                        <label class="toggle toggle-balanced">
+                         <input type="checkbox" ng-model="vm.kot_notification" ng-checked="vm.kot_notification == true" ng-change="vm.kotNotification(vm.kot_notification)">
+                         <div class="track">
+                           <div class="handle"></div>
+                         </div>
+                       </label>
+                    </li>
+                    <li class="item item-toggle">
+                        Waiter App Notification
+                        <label class="toggle toggle-assertive">
+                         <input type="checkbox" ng-model="vm.waiter_app_notification" ng-checked="vm.waiter_app_notification == true" ng-change="vm.waiterAppNotification(vm.waiter_app_notification)">
+                         <div class="track">
+                           <div class="handle"></div>
+                         </div>
+                       </label>
+                    </li>
+
+                </ul>
+
+            </div>
+            <div ng-if="vm.printer_type=='server_config'" class="col col-75 card printer-detail">
+                <div class="printer-detail-header">
+                    <h2>Server Configuration</h2>
+                </div>
+                <span>Connect your kot and waiter app with <strong>{{vm.ip}}</strong> </span><br>
+                <button class="button button-balanced" ng-click="vm.startServer()">
+            Run Server
+          </button>
+                <button class="button button-assertive">
+            Stop Server
+          </button>
+                <button class="button" ng-click="vm.checkConnection()">
+            check Server connection
+          </button>
+            </div>
+    </ion-content>
+</ion-view>

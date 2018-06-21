@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="lib/socket.io.js"></script>
+    <script src="lib/angular-socket-io/socket.js"></script>
+
+    <script src="lib/angular-sqlite-master/angular-sqlite.js"></script>
+    <!-- cordova script (this will be a 404 during development) -->
+    <!--<script src="lib/ng-cordova.min.js"></script>-->
+
+    <!--<script src="cordova.js"></script>-->
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="app/common/firebase-config.js"></script>
+
+    <!-- angular-stepper -->
+    <link href="lib/angular-stepper/angular-stepper.css" rel="stylesheet">
+    <script src="lib/angular-stepper/angular-stepper.js"></script>
+
+    <!-- <script src="../node_modules/qrcode-generator/qrcode.js"></script>
+    <script src="../node_modules/qrcode-generator/qrcode_UTF8.js"></script>
+    <script src="../node_modules/angular-qrcode/angular-qrcode.js"></script> -->
+    <!-- <angular-electron> -->
+    <script src="lib/angular-electron/angular-electron.js"></script>
+
+    <script src="lib/ion-datetime-picker/release/ion-datetime-picker.min.js"></script>
+    <link href="lib/ion-datetime-picker/release/ion-datetime-picker.min.css" rel="stylesheet">
+
+
+
+
+    <!-- angular-auto-complete -->
+    <!-- <script src="lib/angular-touch/angular-touch.js"></script> -->
+    <!-- moment -->
+    <script src="lib/moment.min.js"></script>
+    <!--<script src="lib/moment/moment.js"></script>-->
+    <!--ratings stars-->
+    <!-- map -->
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyDYeh2o2-AXsF5sSgCk1mtq_tIb3UAHdI4"></script>
+    <script src="lib/ng-map/ng-map.min.js"></script>
+
+    <!--rating-->
+    <script src="lib/ionic-rating/ionic-rating.js"></script>
+    <link href="lib/ionic-rating/ionic-rating.css" rel="stylesheet">
+    <!--ionic toast-->
+    <script src="lib/ionic-toast/ionic-toast.js"></script>
+    <link href="lib/ionic-toast/style.css" rel="stylesheet">
+
+    <!-- your app's js -->
+    <script src="app/app.js"></script>
+    <script src="app/common/localStorage.js"></script>
+    <script src="app/common/setting.js"></script>
+    <script src="app/common/configuration.js"></script>
+    <script src="app/common/formEncode.js"></script>
+    <script src="app/common/currentUser.js"></script>
+    <script src="app/common/notification-service.js"></script>
+    <script src="app/common/my_http.js"></script>
+    <script src="app/common/moment-filter.js"></script>
+    <script src="app/common/loading.js"></script>
+    <script src="app/common/OpenUrlService.js"></script>
+    <script src="app/common/check-internect-conn.js"></script>
+    <script src="app/user/user-services.js"></script>
+    <script src="app/user/login-ctrl.js"></script>
+    <script src="app/user/profile-ctrl.js"></script>
+    <script src="app/user/registration-ctrl.js"></script>
+    <script src="app/user/forgot-password-ctrl.js"></script>
+    <script src="app/orders/order-ctrl.js"></script>
+    <script src="app/orders/posorder-ctrl.js"></script>
+
+    <script src="app/layout/menu-layout-ctrl.js"></script>
+
+    <script src="app/pos/pos-services.js"></script>
+    <script src="app/pos/pos-order-service.js"></script>
+    <script src="app/pos/printer_service.js"></script>
+    <script src="app/pos/menu-services.js"></script>
+    <script src="app/pos/pos-ctrl.js"></script>
+    <script src="app/pos/modal-services.js"></script>
+    <script src="app/pos/modal-ctrl.js"></script>
+    <script src="app/pos/tabs_home.js"></script>
+    <script src="app/pos/payment-ctrl.js"></script>
+    <script src="app/pos/table-ctrl.js"></script>
+    <script src="app/pos/kot-list-ctrl.js"></script>
+    <script src="app/orders/order-services.js"></script>
+
+    <script src="app/reservations/reservations-ctrl.js"></script>
+    <script src="app/reservations/reservations-services.js"></script>
+
+    <script src="app/customers/customers-ctrl.js"></script>
+    <script src="app/customers/customers-services.js"></script>
+
+    <script src="app/settings/settings-ctrl.js"></script>
+    <script src="app/settings/settings-services.js"></script>
+
+    <script src="app/reports/reports-ctrl.js"></script>
+    <script src="app/reports/reports-services.js"></script>
+
+    <script src="app/cashin-cashout/cashin-cashout-ctrl.js"></script>
+    <script src="app/cashin-cashout/cashin-cashout-service.js"></script>
+
+    <script src="app/checkIn-checkOut/checkin-checkout-ctrl.js"></script>
+    <script src="app/checkIn-checkOut/checkin-checkout-service.js"></script>
+
+    <script src="app/bussiness_day/bussiness_day-ctrl.js"></script>
+    <script src="app/bussiness_day/bussiness_day-service.js"></script>
+</head>
+
+<body ng-app="app">
+    <ion-nav-view></ion-nav-view>
+    <div id="printWrapper" style="display:none;"></div>
+</body>
+
+</html>

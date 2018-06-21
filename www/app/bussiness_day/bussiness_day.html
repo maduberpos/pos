@@ -1,0 +1,314 @@
+<ion-view view-title="{{vm.venue_detail.name}} - Bussiness Day" class="cashinoutpage" ng-controller="bussinessdayCtrl as vm" ng-init="vm.tab = 1">
+
+    <ion-content>
+        <div class="notShowinprinter">
+            <div class="row">
+                <div class="col col-33">
+                    <br /> <br />
+                    <div class="list list-inset">
+                        <div class="item">
+                            <h2>{{vm.user.name}}</h2>
+                        </div>
+                        <div ng-show="vm.isDayStarted">
+                            <label class="item item-input">Start Time:  {{ vm.dayStartedDateTime | moment: 'format': 'MMM Do YYYY, h:mm'}}
+                            </label>
+                            <button ng-hide="vm.hide_day" class="button button-block button-balanced" ng-click="vm.dayClose();">Day close</button>
+                        </div>
+                        <div ng-hide="vm.isDayStarted">
+                            <label class="item item-input">
+                               Closed Time {{ vm.dayCloseDateTime | moment: 'format': 'MMM Do YYYY h:mm:ss A'}}
+                            </label>
+                            <button ng-hide="vm.hide_day" class="button button-block button-balanced" ng-click="vm.dayStart()">Day start</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col col-67">
+                    <ion-scroll id="pos-customers" overflow-scroll="false" direction="y" scrollbar-x="true" has-bouncing="true">
+                        <table id="CashInCashOut">
+                            <thead>
+                                <tr>
+                                    <th class="tex0t-left"><strong>ID</strong></th>
+                                    <th class="text-center"><strong>Day Start</strong></th>
+                                    <th class="text-center"><strong>Day Close</strong></th>
+                                    <th class="text-center"><strong>Reports</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="history in vm.history">
+                                    <td class="text-left">{{history.id}}</td>
+                                    <td class="text-center">
+                                        <p ng-show="cash.cashin!=''">{{history.day_start | moment: 'format':'MM/DD/YYYY h:mm:ss A'}}</p>
+                                    </td>
+
+                                    <!-- <td class="text-right">{{cash.cashin_amount}}</td> -->
+                                    <td class="text-center">
+                                        <p ng-show="history.day_close!=''"> {{history.day_close | moment: 'format':'MM/DD/YYYY h:mm:ss A'}}</p>
+                                    </td>
+                                    <!-- <td class="text-right">{{cash.cashout_amount}}</td> -->
+                                    <td class="text-center">
+                                        <a style="color:black;" ng-click="vm.reports_business_day(history.id)" class="icon ion-printer"></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </ion-scroll>
+                    <ion-infinite-scroll ng-if="vm.noMoreItemsAvailable" on-infinite="vm.loadMore()" distance="10%"></ion-infinite-scroll>
+                    <!--  </ion-scroll> -->
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div id="businessDay" style="display: none;">
+            <h1>{{vm.user.name}}</h1>
+            <h2>Bussiness Day Report</h2>
+            <!--   <p>{{vm.date | date:'M/d/yyyy'}}</p> -->
+
+            <table>
+                <h2>Sales By Order Type </h2>
+                <thead>
+                    <tr>
+                        <th width="25%" style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Head</strong></th>
+                        <th width="25%" style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Discount</strong></th>
+                        <th width="25%" style="border: 1px solid #959595; padding: 3px; width:15%;" class="text-right"><strong>Gross</strong></th>
+                        <th width="25%" style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>N.Sale</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="salesByOrderType in vm.bussiness_report.sales_by_order_type">
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ salesByOrderType.order_type }} </td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ salesByOrderType.discount | number :0 }} </td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ salesByOrderType.sale | number :0 }}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ salesByOrderType.netsale | number :0 }}</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-left">Total </td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-left"> {{vm.salesByOrderType_discount_sum}}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{vm.salesByOrderType_sale_sum}}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{vm.salesByOrderType_netsale_sum}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table>
+                <h2>Sales By Payment Type</h2>
+                <thead>
+                    <tr>
+                        <th width="25%" style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Head</strong></th>
+                        <th width="25%" style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Discount</strong></th>
+                        <th width="25%" style="border: 1px solid #959595; padding: 3px; width:15%;" class="text-right"><strong>Gross</strong></th>
+                        <th width="25%" style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>N.Sale</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="SaleByPaymentType in vm.bussiness_report.sales_by_payment_type">
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ SaleByPaymentType.payment_method }} </td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ SaleByPaymentType.discount | number :0 }} </td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ SaleByPaymentType.sale | number :0 }}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ SaleByPaymentType.netsale | number :0 }}</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-left">Total </td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{vm.SaleByPaymentType_discount_sum}} </td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{vm.SaleByPaymentType_sale_sum}}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{vm.SaleByPaymentType_netsale_sum}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+
+        <!--  <div id="cashIncashOut" style="display: none;">
+            <h1>{{vm.user.name}}</h1>
+            <h2>Cash in/out Report</h2>
+            <p>{{vm.date | date:'M/d/yyyy'}}</p>
+
+            <table>
+                <h2>Check in/out Details </h2>
+
+                <thead>
+                    <tr>
+                        <th style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Checkin Date</strong></th>
+                        <th style="border: 1px solid #959595; padding: 3px; width:15%;" class="text-right"><strong>Checkin Time</strong></th>
+                        <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>Checkout Date</strong></th>
+                        <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>Checkout Time</strong></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="report in vm.reports_details.check_in_check_out_details">
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ report.checkin | moment: 'format':'MM/DD/YYYY'}} </td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.checkin | moment: 'format':'h:mm:ss A'}}</td>
+                        <td ng-hide="report.checkout == ''" style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.checkout | moment: 'format':'MM/DD/YYYY '}}</td>
+                        <td ng-hide="report.checkout == ''" style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.checkout | moment: 'format':'h:mm:ss A'}}</td>
+                    </tr>
+
+                </tbody>
+                <table>
+                    <h2>Sales Summery </h2>
+
+                    <tr>
+                        <td width="80%" class="text-left" style="border: 1px solid #959595; padding: 3px; width:10%;"><strong>Delivery Charges</strong></td>
+                        <th width="20%" style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ vm.reports_details.total_shipping_charges | number: 2 }}</th>
+                    </tr>
+                    <tr>
+                        <td width="80%" class="text-left" style="border: 1px solid #959595; padding: 3px; width:10%;"><strong>Total Discount</strong></td>
+                        <th width="20%" style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ vm.reports_details.total_discount | number:2 }}</th>
+                    </tr>
+                    <tr>
+                        <td width="80%" class="text-left" style="border: 1px solid #959595; padding: 3px; width:10%;"><strong>Tax</strong></td>
+                        <th width="20%" style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ vm.reports_details.total_tax | number:2 }}</th>
+                    </tr>
+                    <tr>
+
+
+
+                        <td width="80%" class="text-left" style="border: 1px solid #959595; padding: 3px; width:20%;"><strong>Sale</strong></td>
+
+                        <th width="20%" style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ vm.reports_details.total_sale | number :2 }}</th>
+                    </tr>
+                    <tr>
+
+
+
+                        <td width="80%" class="text-left" style="border: 1px solid #959595; padding: 3px; width:20%;"><strong>Net Sale</strong></td>
+
+                        <th width="20%" style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ vm.reports_details.total_netsale | number :2 }}</th>
+                    </tr>
+
+
+                </table>
+                <table>
+                    <h2>Sales By Items </h2>
+
+                    <thead>
+                        <tr>
+                            <th style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Name</strong></th>
+                            <th style="border: 1px solid #959595; padding: 3px; width:15%;" class="text-right"><strong>sold</strong></th>
+                            <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>N.Sales</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="report in vm.reports_details.sales_by_items">
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ report.menu_item_name }} ({{ report.price_title }})</td>
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.items_count }}</td>
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.menu_items_total | number :2 }}</td>
+                        </tr>
+
+                        <tr>
+                            <td style="border: 1px solid #959595; padding: 3px;" colspan="2" class="text-right"><b>{{ vm.total_items_count  }}</b></td>
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right"><b>{{ vm.totalsale }}</b></td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+
+
+
+                <table>
+                    <h2>Sales By Category </h2>
+                    <thead>
+                        <tr>
+                            <th style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Categry</strong></th>
+                            <th style="border: 1px solid #959595; padding: 3px; width:20%;" class="text-right"><strong>sold</strong></th>
+                            <th style="border: 1px solid #959595; padding: 3px; width:20%;" class="text-right"><strong>N.sale</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="report in vm.reports_details.sales_by_category">
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ report.category_name }}</td>
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.items_count }}</td>
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.category_total | number :2 }}</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #959595; padding: 3px;" colspan="2" class="text-right"><b>{{ vm.cattotal_items_count  }}</b></td>
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right"><b>{{ vm.cattotalamount_count }}</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table>
+                    <h2>Sales By Order Type </h2>
+
+                    <thead>
+                        <tr>
+                            <th style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Order Type</strong></th>
+                            <th style="border: 1px solid #959595; padding: 3px; width:15%;" class="text-right"><strong>Sale</strong></th>
+                            <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>Tax</strong></th>
+                            <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>N.Sale</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="report in vm.reports_details.sales_by_order_type">
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ report.order_type }} </td>
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.sale | number :2 }}</td>
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.tax | number :2 }}</td>
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.netsale | number :2 }}</td>
+                        </tr>
+
+
+
+                    </tbody>
+                </table>
+                <table>
+                    <h2>Sales By Payment Method </h2>
+
+                    <thead>
+                        <tr>
+                            <th style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Payment Method</strong></th>
+                            <th style="border: 1px solid #959595; padding: 3px; width:15%;" class="text-right"><strong>Sale</strong></th>
+                            <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>Tax</strong></th>
+                            <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>N.Sale</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="report in vm.reports_details.sales_by_payment_method">
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ report.payment_method }} </td>
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.sale | number :2 }}</td>
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.tax | number :2 }}</td>
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.netsale | number :2 }}</td>
+                        </tr>
+
+
+
+                    </tbody>
+                </table>
+
+                <table>
+                    <h2>Sales By Platform </h2>
+
+                    <thead>
+                        <tr>
+                            <th style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Platform Name</strong></th>
+                            <th style="border: 1px solid #959595; padding: 3px; width:15%;" class="text-right"><strong>Sale</strong></th>
+                            <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>Tax</strong></th>
+                            <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>N.Sale</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="report in vm.reports_details.sales_by_platform">
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ report.platform }} </td>
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.sale | number :2 }}</td>
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.tax | number :2 }}</td>
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.netsale | number :2 }}</td>
+                        </tr>
+
+
+
+                    </tbody>
+                </table></div> -->
+
+
+
+    </ion-content>
+</ion-view>

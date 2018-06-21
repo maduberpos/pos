@@ -1,0 +1,72 @@
+<ion-modal-view class="modal itemmodel" ng-controller="ModalCtrl as vm">
+
+  <header class="bar bar-header bar-positive has-header">
+    <h1 class="title">{{ vm.menu.menu_item_name }}</h1>
+    <button class="button button-clear" ng-click="vm.hide()">Cancel</button>
+  </header>
+
+  <ion-content has-bouncing="true"  class="padding item_modal">
+      <br><br>
+      <div class="row item-desc ">
+        <div class="col">
+          <div class="model-item-header" style="background-image: url('{{vm.menu.image_key}}');">
+            <div class="header-overlay">
+              <div ng-show="vm.menu.discount" class="item_discount"><span>{{vm.menu.discount}}%</span></div>
+              <h2>{{ vm.menu.menu_item_name}}</h2>
+              <p>{{vm.menu.description}}</p>
+            </div>
+          </div>
+          <div class="col  text-center">
+            <div min="1" max="1000" ng-model="vm.item.quantity" ng-change="vm.changeQuantity(vm.item.quantity)"   rn-stepper></div>
+          </div>
+          <ul id="pos-menu-list">
+            <!--menu price options-->
+            <h3 class="option-name" >Item Prices</h3>
+            <ion-radio class="icon item-icon-left" icon="ion-android-radio-button-on"
+                       ng-repeat="item in vm.menu.prices" name="prices" ng-model="vm.selected_deal"
+                       ng-value="{{item.price_id}}" ng-click="vm.ServingSize(vm.menu.prices)" >
+              <i class="icon ion-android-radio-button-off my-selected-icon item_name"></i> {{item.title}}
+              <span class="option_item_price item_name">
+                <span ng-show="vm.menu.discount===0"> {{item.price}} </span>
+                <span ng-show="vm.menu.discount" style=" text-decoration: line-through; color:rgb(140, 140, 140);"> {{item.price}} </span>  &nbsp; 
+                <span  ng-show="vm.menu.discount"> {{ item.price - ((vm.menu.discount/100)*item.price)|number:0 }} </span>
+              </span>
+            </ion-radio>
+
+            <!--Menu Options  -->
+            <ion-list ng-repeat="option in vm.menu.menu_options">
+              <h3 class="option-name">{{option.option_name}}</h3>
+              <p class="info" ng-if="option.option_type=='radio'">Minimum 1 and Maximum 1</p>
+              <p class="info" ng-if="option.option_type=='checkbox'">Minimum 1 and Maximum {{option.items.length}}</p>
+
+              <ion-checkbox class="checkbox-my" ng-if="option.option_type=='checkbox'" ng-repeat="item in option.items"
+                            ng-model="vm.selected_options[option.id][item.id]" name="{{option.id}}" ng-value="item.id"
+                            ng-click="vm.selected_option(option.id)">
+                {{item.item_name}}
+                <span class="option_item_price" ng-if="item.item_price!=0">+{{item.item_price}}</span>
+              </ion-checkbox>
+
+              <ion-radio class="icon item-icon-left" icon="ion-android-radio-button-on"
+                         ng-if="option.option_type=='radio'" ng-repeat="item in option.items"
+                         ng-model="vm.selected_options[option.id]" name="{{option.id}}" ng-value="item.id"
+                         ng-click="vm.selected_option(option.id)"
+                         ng-init="$index==0?(vm.selected_options[option.id]=item.id):''; $index==0?(vm.selected_option(option.id)):''; " 
+                         >
+                <i class="icon ion-android-radio-button-off my-selected-icon"></i> {{item.item_name}}
+                <span class="option_item_price" ng-if="item.item_price!=0">+{{item.item_price}}</span>
+              </ion-radio>
+            </ion-list>
+          </ul>
+        </div>
+      </div>
+
+  </ion-content>
+  <ion-footer-bar>
+
+    <button class="button button-light icon-right  ion-arrow-right-c" ng-click="vm.add_item(vm.data)">
+      Add
+    </button>
+  </ion-footer-bar>
+
+
+</ion-modal-view>

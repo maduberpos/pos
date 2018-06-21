@@ -1,0 +1,18 @@
+<ion-modal-view id="note-modal">
+    <ion-header-bar>
+        <h1 class="title">Additional Instructions</h1>
+    </ion-header-bar>
+    <ion-content scroll="false">
+        <div class="list list-inset">
+            <label class="item item-input">
+        <textarea ng-model="vm.note" placeholder="Note"></textarea>
+      </label>
+        </div>
+        <ion-footer-bar>
+            <div class="button-bar">
+                <button class="button cancel" ng-click="vm.CancelNote()">Cancel</button>
+                <button class="button  save" ng-disabled="vm.note === ''" ng-click="vm.saveNote()">Save</button>
+            </div>
+        </ion-footer-bar>
+    </ion-content>
+</ion-modal-view>

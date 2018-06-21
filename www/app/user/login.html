@@ -1,0 +1,57 @@
+<ion-view view-title="Login" id="login-page" ng-controller="LoginCtrl as login" >
+  <ion-content has-bouncing="true">
+    <div id="login-wrapper">
+
+        <div id="logo" class="text-center">
+            <img src="img/app/logo.png">
+          </div>
+          <!-- <div class="msg-area" ng-show="login.alert">
+             <div class="error-msg" ng-show="login.alert">
+                  <span class="msg-icon"> <i class="icon ion-alert-circled error"></i></span>
+                 {{login.msg}}
+                 <span class="remove" ng-click="login.hide_msg()">
+                    <i class="icon ion-android-close"></i>
+                  </span>
+             </div> 
+           </div> -->
+           <div class="list">
+           <form name="loginForm" novalidate ng-submit="login.login()" >
+            <label class="item item-input">
+              <span class="email-icon">
+                 <i class="icon ion-email"></i>
+              </span>
+              <input type="email" 
+                  name="email" 
+                  class="input" 
+                  ng-model="login.user.email" 
+                 
+                  placeholder="Email"
+                  required
+                   />
+               <i class="icon ion-alert-circled error"></i>
+            </label>
+            <label class="item item-input">
+               <span class="pass-icon">
+                 <i class="icon ion-locked"></i>
+              </span>
+              <input type="password"
+                 name="password"
+                 class="input"  
+                 ng-model="login.user.password" 
+                 placeholder="Password" 
+                 ng-minlength="5" 
+                 required
+                 />
+                 <i class="icon ion-alert-circled error"></i>
+            </label>
+             <div id="buttons">
+               <button class="button login" ng-disabled="loginForm.$invalid"> 
+                 <i class="icon ion-log-in"></i> Login
+               </button>
+             </div>
+              <div class="clear"></div>
+             </form>
+          </div>
+     </div>
+  </ion-content>
+</ion-view>

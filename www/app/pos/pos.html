@@ -1,0 +1,582 @@
+<ion-view ng-controller="pos as vm" title="{{vm.venue_detail.name}} - POS">
+    <ion-content class=" pos-content bg-style-01" has-bouncing="false">
+        <div class="pos-head">
+            <div class="row">
+                <div class="col col-60">
+                    <div class="card">
+                        <div class="item item-text-wrap first_row">
+                            <ion-scroll id="pos-categories" overflow-scroll="false" direction="x" scrollbar-x="true" has-bouncing="true">
+                                <ul style="width: {{vm.categories.length * 210}}px;">
+                                    <li ng-repeat="item in vm.categories  | orderBy:'order'" ng-click="vm.menu_by_cat(item.category_id)" ng-swipe-left="vm.showActions = true" ng-if="item.type==='order'">
+                                        <div ng-show="item.category_discount" class="category_discount"> <span>{{item.category_discount}}%</span></div>
+                                        <div class="category-name">{{item.category_name}} </div>
+                                        <img ng-src="{{item.image_s}}" alt="{{item.category_name}}" />
+                                    </li>
+                                </ul>
+                            </ion-scroll>
+                        </div>
+                    </div>
+                    <!-- {{vm.showActions}} -->
+                    <div class="card">
+
+                        <div class="item item-text-wrap second_row">
+
+                            <div class="header">
+                                <h2 class="title-center">{{vm.title}}</h2>
+                                <div id="search-bar">
+                                    <div class="list list-inset">
+                                        <label class="item item-input">
+                                            <i class="icon ion-search placeholder-icon"></i>
+                                            <input type="text" ng-model="vm.searchQuary" ng-keyup="vm.searchItem()" placeholder="Search Menu Item">
+                                        </label>
+                                    </div>
+                                    <div class="icon ion-close-circled remove-search" ng-show="vm.searchQuary" ng-click="vm.emptySearch()">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <ion-scroll id="pos-menu-list" style="height:{{ vm.viewHight- 347}}px;" overflow-scroll="false" direction="y" scrollbar-y="true" has-bouncing="true" delegate-handle="MenuItems">
+                                <ul>
+                                    <li ng-repeat="item in vm.menu | orderBy:'menu_item_name'" ng-click="vm.add_item(item)">
+
+                                        <div class="jm-item second">
+                                            <div class="jm-item-wrapper ">
+                                                <div ng-show="item.discount" class="item_discount"><span>{{item.discount}}%</span></div>
+                                                <div ng-if="item.prices.length ===1 && item.menu_options.length === 0" ng-class="item.discount ? 'item-discount-price' : 'item-price'">
+                                                    <span ng-show="item.discount===0">{{item.prices[0].price}}</span>
+                                                    <div ng-show="item.discount">{{ item.prices[0].price - ((item.discount/100)*item.prices[0].price)|number:0 }}</div>
+                                                    <div ng-show="item.discount" style=" text-decoration: line-through; color:#d2d2d2;">{{item.prices[0].price}}</div>
+                                                </div>
+                                                <div ng-if="item.prices.length >1 || item.menu_options.length > 0" class="item-price">
+                                                    <i class="icon ion-eye" style="font-size: 22px;"></i>
+                                                </div>
+                                                <div class="jm-item-image">
+                                                    <img ng-src="{{item.image_key}}" alt="{{item.menu_item_name}}" />
+                                                </div>
+                                                <div class="jm-item-title">{{item.menu_item_name}}</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </ion-scroll>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- ......................end............... -->
+
+                <div class="col col-40">
+                    <div class="card">
+                        <div class="item item-text-wrap">
+                            <div id="pos-options" style="margin-bottom:0; ">
+                                <div id="servers">
+                                    <select ng-model="vm.server_id" ng-change="vm.set_server(vm.server_id)">
+                                        <option ng-repeat="srv in vm.servers" value="{{srv.id}}"> {{srv.name}} ( {{srv.type}} )</option>
+                                    </select>
+                                </div>
+                                <div id="order-type">
+                                    <select ng-model="vm.orderType" id="orderType" name="orderType" ng-change="vm.setOrderType(vm.orderType)">
+                                        <option ng-repeat="ot in vm.OrderTypes" value="{{ot.slug}}"> {{ot.type}}</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="pos-options">
+                                <div class="select-customer">
+                                    <button class="icon-right" ng-click="vm.selectCustomer()">{{vm.selected_customer.first_name}} {{vm.selected_customer.last_name}}
+                                        <i class="icon ion-person-add"></i>
+                                    </button>
+                                </div>
+                                <div class="special-construction">
+                                    <button class="" ng-click="vm.set_note()">
+                                        <span ng-if="vm.additional_instruction===''">Note...</span>
+                                        {{vm.additional_instruction | limitTo: 25}}{{vm.additional_instruction.length > 25 ? '...' : ''}}
+                                        <i
+                                            class="icon  ion-compose"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                            <div class="clear"></div>
+                            <div class="first-tab">
+                                <div class="cart-bar">
+                                    <div class="item item-divider">
+                                        <div class="row">
+                                            <div class="col col-10">x</div>
+                                            <div class="col col-50 text-center">Product</div>
+                                            <div class="col  text-center">Qty</div>
+                                            <div class="col col-10 text-right">Price</div>
+                                        </div>
+                                    </div>
+
+                                    <ion-scroll id="count-area" style="height:{{ vm.viewHight- 432}}px;" overflow-scroll="false" direction="y" scrollbar-y="true" has-bouncing="true" delegate-handle="CartItems">
+                                        <div class="item item-text-wrap" ng-repeat="item in vm.items">
+                                            <div class="row">
+                                                <div class="col text-left col-10" ng-click="vm.remove($index)">
+                                                    <i class="icon remove-item ion-close-circled"></i>
+                                                </div>
+                                                <div class="col col-50 ">
+                                                    <div class="row">
+                                                        <div class="col col-80">
+                                                            <p style="margin:0;">{{item.menu_item_name}} ({{item.prices[0].title}})</p>
+                                                            <i ng-show="item.discount" style="font-size: 11px; color:#05b127">{{ item.discount }}% off</i>
+                                                        </div>
+                                                        <div class="col col-20 text-right">
+                                                            <span ng-hide="item.discount">{{item.prices[0].price | number :0}} x</span>
+                                                            <div ng-show="item.discount">
+                                                                {{item.discounted_price | number :0}} x
+                                                                <span style="text-decoration: line-through; color:#7e7a7a;">
+                                                                    {{item.prices[0].price | number :0}} x</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="option-list">
+                                                        <div ng-repeat="option in item.menu_options">
+                                                            <div class="row">
+                                                                <strong>{{option.option_name}}</strong>
+                                                            </div>
+                                                            <div ng-if="option.option_type=='checkbox'">
+                                                                <div class="row" ng-repeat="(key, value) in option.fulla" ng-if="value">
+                                                                    <div class="col col-80">
+                                                                        <i class="icon ion-android-checkbox"></i> {{value.item_name }}
+                                                                    </div>
+                                                                    <div class="col col-20 text-right">
+                                                                        <span ng-if="value.item_price!=0">+{{value.item_price | number :0}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row" ng-if="option.option_type=='radio'">
+                                                                <div class="col col-80">
+                                                                    <i class="icon ion-android-radio-button-on"></i> {{option.selectedByName}}
+                                                                </div>
+                                                                <div class="col col-20 text-right">
+                                                                    <span class="option_item_price">+{{option.selectedItemPrice | number :0}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col  text-center">
+                                                    <div rn-stepper min="1" max="1000" ng-model="item.quantity" ng-change="vm.QtyChange($index,item.quantity)"></div>
+                                                </div>
+                                                <div class="col col-10 text-right">
+                                                    <span ng-hide="item.discount">{{( item.prices[0].price + vm.option_price_count($index)) * item.quantity | number :0 }}</span>
+                                                    <span ng-show="item.discount">
+                                                         {{( item.discounted_price + vm.option_price_count($index)) * item.quantity | number :0 }}
+                                                     </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ion-list>
+                                            <ion-item class="no-border"></ion-item>
+                                            <ion-item class="no-border"></ion-item>
+                                        </ion-list>
+                                    </ion-scroll>
+                                </div>
+                                <div class="total-area">
+                                    <div class="item item-divider">
+                                        <div class="row">
+                                            <div class="col col-50">Total Qty
+                                                <span class="left">{{vm.getTotalItems}}</span>
+                                            </div>
+                                            <div class="col col-50">Sub Total
+                                                <span class="right">{{vm.getSubTotal | number :0}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="item item-text-wrap">
+                                        <div class="row">
+                                            <div class="col col-50">
+                                                <input class="discount" type="text" ng-keyup="vm.applyDiscount()" ng-model="vm.discountRate"
+                                                    placeholder="Discount %">
+                                            </div>
+                                            <div class="col col-50">
+                                                <span class="right">{{vm.discount| number :0 }}</span>
+                                            </div>
+                                        </div>
+                                    </div> -->
+
+                                    <div class="item item-text-wrap">
+                                        <div class="row">
+                                            <div class="col col-50">Tax ( {{vm.TaxRate}} %)</div>
+                                            <div class="col col-50">
+                                                <span class="right">{{vm.tax | number :0 }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item item-text-wrap" ng-show="vm.cart.shipping !== 0">
+                                        <div class="row">
+                                            <div class="col col-50">Delivery Charges </div>
+                                            <div class="col col-50">
+                                                <span class="right">{{vm.cart.shipping | number :0 }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item item-divider">
+                                        <div class="row">
+
+                                            <div class="col col-100">
+                                                <strong>Total Payable
+                                                    <span class="right">{{vm.totalCost | number :0}}</span>
+                                                </strong>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row button-areas">
+                                    <div class="col">
+                                        <!--<button ui-sref="app.table" class="button btn-b" ng-disabled="hold_table_order_list.length===0">KOT List-->
+                                        <!--<span class="badge mybadge badge-assertive">{{  vm.hold_table_order_list.length }}</span>-->
+                                        <!--</button>-->
+                                        <select ng-disabled="!vm.table_is_active" id="select-table" ng-model="vm.table_id" ng-change="vm.setTable(vm.table_id)" class="select">
+                                            <option value="0">Select Table</option>
+                                            <option ng-repeat=" mtable in vm.available_table_list" value="{{mtable.id}}">{{mtable.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <button ng-disabled="vm.getSubTotal===0" class="button btn-b" ng-click="vm.kot()">
+                                            <i class="ion-android-restaurant"></i> {{vm.save_kot}}
+                                        </button>
+                                    </div>
+
+                                    <div class="col">
+                                        <button class="button btn-p" ng-disabled="vm.getSubTotal===0" ng-click="vm.checkoutModal()"> Pay <i class="ion-paper-airplane"></i></button>
+                                    </div>
+                                </div>
+                                <div class="row button-areas">
+                                    <div class="col">
+                                        <button class="button btn-b" ng-click="vm.showHoldOrderList('order_list')" ng-disabled="hold_order_list.length===0">
+                                            Orders on Hold
+                                            <span class="badge mybadge badge-assertive">{{ hold_order_list.length }}</span>
+                                        </button>
+                                    </div>
+                                    <div class="col">
+                                        <button class="button btn-b" ng-disabled="vm.getSubTotal===0" ng-click="vm.hold_bill()">
+                                            <i class="ion-android-hand"></i> On Hold
+                                        </button>
+                                    </div>
+                                    <div class="col">
+                                        <button class="button btn-a" ng-disabled="vm.getSubTotal===0" ng-click="vm.cancelConfirmation()">
+                                            <i class="ion-close-circled"></i> Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="pos-bill-print" style="display: none;">
+
+            <img style="width:100px; height:100px; margin: 0 75px; filter: gray; filter: grayscale(100%);" ng-src="{{vm.venue_detail.pos_receipt_logo}}" />
+
+
+            <h2 style="font-size: 14px; margin: 0; text-align: center;">{{vm.venue_detail.name}}</h2>
+            <p style="text-align: center;">
+                {{ vm.venue_detail.address1 }} {{ vm.venue_detail.address2 }} {{ vm.venue_detail.address3 }} {{ vm.venue_detail.city }}</br>
+                {{ vm.venue_detail.email }}</br>
+                {{ vm.venue_detail.phone_no }}</br>
+            </p>
+            <!--End Invoice Mid-->
+
+
+            <br>
+            <table>
+                <thead>
+                    <h2 style="text-align: center;margin: 0;">Order # {{vm.cart.kot_unique_id}}</h2>
+                    <tr>
+                        <td class="text-left" ng-show="vm.cart.order_type != ''" style=" padding: 3px; width:50%;">Order Type : {{vm.cart.order_type}}</td>
+                        <td class="text-right" ng-show="vm.server_name != ''" style=" padding: 3px; width:50%;">Server : {{vm.server_name}}</td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-left" style=" padding: 3px; width:50%;">Date : {{ vm.date | moment: 'format': 'MMM Do YYYY ' }}</td>
+                        <td class="text-right" style=" padding: 3px; width:50%;">Time : {{ vm.date | moment: 'format': 'h:mm a' }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-left" style=" padding: 3px; width:50%;">Payment by : {{ payment_method }}</td>
+                        <td class="text-right" ng-show="vm.cart.table_id != '0'" style=" padding: 3px; width:50%;">Table no # {{vm.cart.table_id}} </td>
+                    </tr>
+
+
+                </thead>
+            </table>
+            <!--   ng-if="vm.cart.order_type === 'delivery'" -->
+
+            <div id="table">
+                <table>
+                    <thead>
+                        <tr class="tabletitle" style="border-bottom:1px solid #959595;border-top:1px solid #959595;">
+                            <td style=" width:70%;" class="text-left">
+                                <h6>Item</h6>
+                            </td>
+                            <td style=" width:10%;" class="Hours">
+                                <h6 class="text-right"> Qty</h6>
+                            </td>
+                            <td style=" width:20%;" class="Rate">
+                                <h6 class="text-right"> S.Total</h6>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="service" ng-repeat="item in vm.items" style="border: none;">
+                            <td class="tableitem" style=" padding: 3px;">
+                                <div class="" style="width: 100%; float:left;">
+                                    <div class="text-left">
+                                        <p style="margin:0;  font-size: 12px; float: left; width:80%;">{{item.menu_item_name}} ({{item.prices[0].title}})<br>
+                                            <i ng-show="item.discount" style="font-size: 9px;"> {{ item.discount }}% Off</i>
+                                        </p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p ng-hide="item.discount" style="margin:0; font-size: 10px; float: right; width:20%;"> {{item.prices[0].price | number :0}} x</p>
+                                        <div ng-show="item.discount">
+                                            {{item.discounted_price | number :0}}
+                                            <p style="text-decoration: line-through; color:#d2d2d2;font-size: 10px; ">
+                                                {{item.prices[0].price | number :0}} </p>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+
+
+                                <div class="option-list" style="width: 100%; float:left;">
+                                    <div ng-repeat="option in item.menu_options">
+                                        <div class="">
+                                            <strong style="font-size: 12px;"><p>{{option.option_name}}</p></strong>
+                                        </div>
+                                        <div ng-if="option.option_type=='checkbox'">
+                                            <div class="row" ng-repeat="(key, value) in option.fulla" ng-if="value">
+                                                <div class="" style=" float: left; width:80%;">
+                                                    <p style="margin:0;  font-size: 12px;">
+                                                        {{value.item_name }}
+                                                    </p>
+                                                </div>
+                                                <div class=" text-right" style="float: right; width:20%;">
+                                                    <p style="margin:0; font-size: 10px; ">
+                                                        <span ng-if="value.item_price!=0">+{{value.item_price | number :0}}</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="" ng-if="option.option_type=='radio'">
+                                            <div class="">
+                                                <p>{{option.selectedByName}}</p>
+                                            </div>
+                                            <div class=" text-right">
+                                                <span class="option_item_price" ng-if="option.selectedItemPrice!=0">+{{option.selectedItemPrice | number :0}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style=" vertical-align: top;  padding: 3px; margin-top: -20px;" class="tableitem text-right">{{item.quantity}}</td>
+                            <td style=" vertical-align: top;  padding: 3px;" class="tableitem text-right">
+
+                                <span ng-hide="item.discount">{{( item.prices[0].price + vm.option_price_count($index)) * item.quantity | number :0 }}</span>
+                                <span ng-show="item.discount">
+                                                         {{( item.discounted_price + vm.option_price_count($index)) * item.quantity | number :0 }}
+                                                     </span>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot style="border-top: 1px solid #959595">
+                        <tr class="tabletitle" ng-show="vm.discountRate > 0 || vm.cart.tax > 0">
+
+                            <td colspan="2" style="
+                         padding: 3px;" class="Rate">
+                                <h2 style="font-size: 12px;" class="text-right">Sub Total</h2>
+                            </td>
+                            <td style="
+                         padding: 3px;" class="payment">
+                                <h2 style="font-size: 12px;" class="text-right">{{vm.cart.sub_total| number :0 }}</h2>
+                            </td>
+                        </tr>
+                        <tr class="tabletitle" ng-show="vm.cart.tax > 0">
+
+                            <td colspan="2" style=" padding: 3px;" class="Rate">
+                                <h2 style="font-size: 12px;" class="text-right">Tax ({{vm.TaxRate}}%)</h2>
+                            </td>
+                            <td style=" padding: 3px;" class="payment">
+                                <h2 style="font-size: 12px;" class="text-right">{{vm.tax | number :0 }}</h2>
+                            </td>
+                        </tr>
+                        <tr class="tabletitle" ng-show="vm.discountRate > 0">
+
+                            <td colspan="2" style=" padding: 3px;" class="Rate">
+                                <h2 style="font-size: 12px;" class="text-right">Discount ({{vm.discountRate}}%)</h2>
+                            </td>
+                            <td style=" padding: 3px;" class="payment">
+                                <h2 style="font-size: 12px;" class="text-right">{{vm.discount| number :0 }}</h2>
+                            </td>
+                        </tr>
+
+                        <tr class="tabletitle" ng-show="vm.cart.shipping !== 0">
+
+                            <td colspan="2" style=" padding: 3px;" class="Rate">
+                                <h2 style="font-size: 12px;" class="text-right">Delivery Charger</h2>
+                            </td>
+                            <td style=" padding: 3px;" class="payment">
+                                <h2 style="font-size: 12px;" class="text-right">{{vm.cart.shipping| number :0 }}</h2>
+                            </td>
+                        </tr>
+
+                        <tr class="tabletitle">
+
+                            <td colspan="2" style="
+                         padding: 3px;" class="Rate">
+                                <h2 style="font-size: 12px;" class="text-right">Total</h2>
+                            </td>
+                            <td style="
+                         padding: 3px;" class="payment">
+                                <h2 style="font-size: 12px;" class="text-right"> {{vm.totalCost | number :0}}</h2>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <p ng-hide="vm.additional_instruction===''">Note: {{vm.additional_instruction}}</p>
+                            </td>
+
+                        </tr>
+
+
+                    </tfoot>
+                </table>
+                <hr ng-show="vm.cart.order_type === 'delivery'">
+
+                <table ng-show="vm.cart.order_type === 'delivery'">
+                    <thead>
+                        <h3 ng-show="vm.cart.order_type === 'delivery'" style="text-align: center;margin: 0;">Customer</h3>
+                        <tr>
+                            <td style=" padding: 3px; width:50%;">Name : {{vm.selected_customer.first_name}} {{vm.selected_customer.last_name}} </td>
+
+
+                        </tr>
+                        <!-- <tr>
+                        <td style=" padding: 3px; width:50%;">email : </td>
+                        <td class="text-right">{{vm.selected_customer.email}}</td>
+                    </tr> -->
+                        <tr>
+                            <td style=" padding: 3px; width:50%;">Phone : {{vm.selected_customer.mobile_number}} </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                Address : {{vm.customer_address.addressLine1}} {{vm.customer_address.addressLine2 }} {{vm.customer_address.city }}
+                            </td>
+                        </tr>
+
+
+                    </thead>
+                </table>
+
+
+                <!--End Table-->
+
+                <div>
+                    <p class="text-center">
+                        {{vm.bill_print_footer}}
+                    </p>
+                </div>
+
+                <!-- <hr>
+
+                <p class="text-center">Scan QR code for download online ordering app and enjoy amazing discount vouchers </p>
+                <br>
+                <p class="text-center"><img class="qr " src="img/qr.png"></p> -->
+
+                <hr>
+                <p class="text-center">Powered by www.maduber.com</p>
+                <p class="text-center">0300 5292 723</p>
+
+            </div>
+            <!--End InvoiceBot-->
+        </div>
+
+
+        <div id="kot-bill-print" style="display: none;">
+
+            <!--End Invoice Mid-->
+            <h2 style="width:60%; margin: 0 50px ; ">Order# {{vm.cart.kot_unique_id}}</h2>
+            <span style="width:30%; float:left;"> {{ vm.date | moment: 'format': 'h:mm a' }}</span>
+            <span style="width:60%; float:right;">Estimated time: {{ vm.kot_time }} min</span>
+            <div id="table">
+                <table>
+                    <tr class="tabletitle" style="border-top: 1px solid #959595;border-bottom: 1px solid #959595; ">
+                        <td style=" padding: 3px; width:80%;" class="text-left">
+                            <h6>Item</h6>
+                        </td>
+                        <td style=" padding: 3px; width:20%;" class="Hours">
+                            <h6 class="text-right"> Qty</h6>
+                        </td>
+
+                    </tr>
+
+                    <tr class="service" ng-repeat="item in vm.items">
+                        <td class="tableitem" style=" padding: 3px;">
+                            <div class="" style="width: 100%; float:left;">
+                                <div class="text-left">
+                                    <p style="margin:0;  font-size: 12px; float: left; width:100%;">{{item.menu_item_name}} ({{item.prices[0].title}})</p>
+                                </div>
+                            </div>
+                            <div class="option-list" style="width: 100%; float:left;">
+                                <div ng-repeat="option in item.menu_options">
+                                    <div class="">
+                                        <strong style="font-size: 12px;"><p>{{option.option_name}}</p></strong>
+                                    </div>
+                                    <div ng-if="option.option_type=='checkbox'">
+                                        <div class="row" ng-repeat="(key, value) in option.fulla" ng-if="value">
+                                            <div class="" style=" float: left; width:100%;">
+                                                <p style="margin:0;  font-size: 12px;">
+                                                    {{value.item_name }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="" ng-if="option.option_type=='radio'">
+                                        <div class="">
+                                            <p> {{option.selectedByName}}</p>
+                                        </div>
+                                        <div class=" text-right">
+                                            <span class="option_item_price" ng-if="option.selectedItemPrice!=0">+{{option.selectedItemPrice}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td style=" vertical-align: top;  padding: 3px; margin-top: -20px;" class="tableitem text-right">{{item.quantity}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p ng-hide="vm.additional_instruction===''">Note: {{vm.additional_instruction}}</p>
+                        </td>
+
+                    </tr>
+                </table>
+                <!--End Table-->
+
+                <div id="legalcopy">
+                    <p class="legal">
+                        {{vm.kot_print_footer}}
+                    </p>
+                </div>
+            </div>
+            <!--End InvoiceBot-->
+        </div>
+    </ion-content>
+</ion-view>

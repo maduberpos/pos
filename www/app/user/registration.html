@@ -1,0 +1,79 @@
+<ion-view view-title="Registration" id="login-page" ng-controller="RegistrationCtrl as reg">
+  <ion-content has-bouncing="false">
+   <div id="logo"></div>
+
+    <div class="msg-area">
+      <div class="error-msg" ng-show="reg.alert">
+           <span class="msg-icon"> <i class="icon ion-alert-circled error"></i></span>
+          {{reg.msg}}
+          <span class="remove" ng-click="reg.hide_msg()">
+             <i class="icon ion-android-close"></i>
+           </span>
+      </div> 
+    </div>
+
+    <div class="list">
+     <form name="registrationForm"  novalidate ng-submit="reg.register()">
+     <label class="item item-input">
+       <span class="email-icon">
+          <i class="icon ion-person"></i>
+       </span>
+       <input type="text"
+            name="name"
+            class="input" 
+            ng-model="reg.customer.name"  
+            placeholder="Name" 
+            required
+             />
+         <i class="icon ion-alert-circled error"></i>   
+     </label>
+     <label class="item item-input">
+       <span class="email-icon">
+          <i class="icon ion-iphone"></i>
+       </span>
+       <input type="text" 
+            name="mobile_number" 
+            class="input" 
+            ng-model="reg.customer.mobile_number" 
+            placeholder="Mobile" 
+            required 
+            />
+            <i class="icon ion-alert-circled error"></i>
+     </label>
+      <label class="item item-input">
+       <span class="email-icon">
+          <i class="icon ion-email"></i>
+       </span>
+       <input type="email" 
+              name="email" 
+              class="input" 
+              ng-model="reg.customer.email"  
+              placeholder="Email" 
+              required
+              />
+              <i class="icon ion-alert-circled error"></i>
+     </label>
+     <label class="item item-input">
+        <span class="pass-icon">
+          <i class="icon ion-locked"></i>
+       </span>
+       <input type="password" 
+              name="password" 
+              class="input"  
+              ng-model="reg.customer.password"  
+              placeholder="Password" 
+              ng-minlength="5"
+              required
+              />
+              <i class="icon ion-alert-circled error"></i>
+     </label>
+      <div id="buttons">
+        <button class="button login" ng-disabled="registrationForm.$invalid"> 
+           <i class="icon ion-person-add"></i> Register
+        </button>
+        <a class="button icon  ion-log-in registration" ng-href="#/unauth/login">Login</a>
+      </div>
+      </form>
+   </div>
+  </ion-content>
+</ion-view>

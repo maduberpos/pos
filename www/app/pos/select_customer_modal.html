@@ -1,0 +1,167 @@
+<ion-modal-view id="customer-modal">
+    <ion-header-bar>
+        <h1 class="title "> Select Customer </h1>
+        <button class="button  button-icon icon close-button" ng-click="vm.hideCustomerModal()"><i
+      class="ion-close-circled"></i></button>
+    </ion-header-bar>
+    <ion-content scroll="true" class="padding">
+        <div class="list">
+            <div class="item-input-inset" ng-if="vm.setfalse">
+                <label class="item-input-wrapper">
+          <input
+            style="width: 90%"
+            type="search"
+            ng-model="customer_name"
+            placeholder="Search by Name or Mobile #"
+            ng-change="showVal(customer_name)"/>
+          <ion-spinner icon="bubbles" class="spinner-assertive" ng-show="spinner"></ion-spinner>
+        </label>
+                <a class="button button-small  button-balanced" ng-click="vm.addNewCustomer()"><i class="icon ion-person-add"></i> Add New Customer</a>
+            </div>
+            <div class="list-customer" ng-show="search_customer_list" overflow-scroll="false" has-header="true" has-bouncing="true">
+                <ion-scroll id="pos-customers" overflow-scroll="false" direction="y" scrollbar-x="true" has-bouncing="true">
+                    <ul class="list">
+                        <li ng-repeat="customer in customers_search" class="item select_customer_list" ng-click="setCustomer(customer)">
+                            <strong>
+                {{customer.first_name}} {{customer.last_name}}
+              </strong> - {{customer.mobile_number}} - {{customer.email}}
+                           <i ng-show="customer.status===1" class=" icon icon-right ion-checkmark-circled"></i> 
+                           <i ng-show="customer.status===0" class=" icon icon-right ion-close-circled"></i> 
+                        </li>
+                    </ul>
+                </ion-scroll>
+            </div>
+            <div class="text-center" ng-if="vm.setCutomerfalse">
+                <h3>{{ vm.selected_customer.first_name }} {{ vm.selected_customer.last_name }} <i class="ion-checkmark-circled"></i></h3>
+                <p>{{vm.selected_customer.email}} ( {{ vm.selected_customer.mobile_number }} )</p>
+            </div>
+
+            <ion-list>
+                <div class="row addNewAddress_head" ng-if="vm.setfalse">
+                    <div class="col col-50"><strong>Select Delivery Address</strong></div>
+                    <div class="col col-50">
+                        <p ng-if="!customer.customer_address" class="text-right">
+                            <a class="button button-small  button-balanced" ng-disabled="vm.selected_customer.customer_id === 1" ng-click="vm.addNewAddress()"><i class="icon ion-plus"></i> Add New Address</a>
+                        </p>
+
+                    </div>
+                </div>
+
+
+                <!--                 ...................... add new address ........................ -->
+
+                <div class="addNewAddress" ng-if="vm.newaddress">
+
+                    <div class="msg-area">
+                        <div class="error-msg" ng-show="vm.alert">
+                            <span class="msg-icon"> <i class="icon ion-alert-circled error"></i></span> {{vm.msg}}
+                            <span class="remove" ng-click="vm.hide_msg()">
+                                       <i class="icon ion-android-close"></i>
+                                     </span>
+                        </div>
+                    </div>
+                    <h3>Add New Address</h3>
+                    <form name="addNewAddressForm" novalidate>
+                        <label class="item item-input item-stacked-label">
+                         <input type="text" ng-model="vm.address.Addresstitle" placeholder="Title ( Home/Office/Friend Address )" required>
+                    </label>
+
+                        <label class="item item-input item-stacked-label">
+                         <input type="text" ng-model="vm.address.addressLine1" placeholder="House # ,Street#" ng-keyup="vm.addressLine1Change()" required>
+                    </label>
+                        <label class="item item-input item-stacked-label">
+                        <select ng-model="vm.delivery_area_id" ng-change="vm.select_area()" style="width:50%; margin-right:20px; " required>
+                            <option value="">Select Delivery Area</option>
+                            <option  ng-repeat="area in vm.venue_detail.delivery_areas" value="{{area.id}}" >{{area.area_name}}, {{area.city_name}} , min order: {{area.minimum_order}}, Delivery Charges: {{area.delivery_charges}}</option>
+                        </select>
+                    </label>
+                        <!-- <label class="item item-input item-select">
+                        <div class="input-label">
+                            Select Delivery Area
+                        </div>
+                        <select>
+                            <option  ng-repeat="area in vm.venue_detail.delivery_areas" value="{{area.area_id}}" >{{area.area_name}}, {{area.city_name}}</option>
+                        </select>
+                      </label> -->
+
+                        <p ng-if="vm.address.addressLine1"><strong>{{ vm.address.Addresstitle }} : </strong> {{ vm.address.addressLine1 }}
+                            <span ng-show="vm.delivery_area_id"> ,{{vm.selected_area.area_name }} </span>
+                            <span ng-show="vm.customer_city">, {{vm.selected_area.city_name}}</span>
+                        </p>
+                        <div ng-if="vm.map.center !==''">
+                            <ng-map zoom="{{vm.map.zoom}}" id="my-map" center="{{ vm.map.center }}" style="height:230px ">
+                                <marker position="{{vm.map.center}}" on-dragend="vm.markerPosition()" title="{{vm.address.title}}" animation="Animation.DROP" draggable="true" visible="true">
+                                </marker>
+                            </ng-map>
+                        </div>
+                        <br>
+                        <div class="padding text-center">
+                            <a ng-if="vm.removeAddressForm" class="button button-small  button-assertive" style="font-size: 22px;" ng-click="vm.cancelAddress()">Cancel</a>
+
+                            <a ng-disabled="addNewAddressForm.$invalid" class="button button-small button-balanced" style="font-size: 24px;" ng-click="vm.saveNewAddress()">Save
+                        <ion-spinner icon="bubbles" class="spinner-defa customer_spinner"
+                                     ng-show="vm.customer_spinner"></ion-spinner>
+                      </a>
+                        </div>
+                    </form>
+                </div>
+                <!-- ........ div close for add new address ........... -->
+
+                <div class="msg-area">
+                    <div class="error-msg" ng-show="vm.alert">
+                        <span class="msg-icon"> <i class="icon ion-alert-circled error"></i></span> {{vm.msg}}
+                        <span class="remove" ng-click="vm.hide_msg()">
+                           <i class="icon ion-android-close"></i>
+                         </span>
+                    </div>
+                </div>
+                <div class="addNewCustomer" ng-if="vm.newcustomer">
+                    <h3>Add New Customer</h3>
+                    <form name="addNewCustomerForm" novalidate>
+                        <label class="item item-input item-stacked-label">
+                         <input type="text" ng-model="vm.customer_first_name" placeholder="First Name" required>
+                    </label>
+                        <label class="item item-input item-stacked-label">
+                         <input type="text" ng-model="vm.customer_last_name" placeholder="Last Name" required>
+                    </label>
+                        <label class="item item-input item-stacked-label">
+                         <input type="text" ng-model="vm.customer_email" placeholder="Email" required>
+                    </label>
+                        <label class="item item-input item-stacked-label">
+                         <input type="number" ng-model="vm.customer_mobile_number" ng-minlength="11" placeholder="Mobile" required>
+                    </label>
+                        <label class="item item-input item-stacked-label">
+                         <input type="text" ng-model="vm.customer_password" ng-minlength="5" placeholder="Password" required>
+                    </label>
+
+                        <div class="padding text-center">
+                            <button ng-if="vm.removeCustomerForm" class="button  button-assertive" ng-click="vm.cancelAddCustomer()">Cancel</button>
+
+                            <button ng-disabled="addNewCustomerForm.$invalid" class="button button-balanced" ng-click="vm.addCustomer()">Save
+                        <ion-spinner icon="bubbles" class="spinner-defa customer_spinner"
+                                     ng-show="vm.customer_spinner"></ion-spinner>
+                      </button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </ion-list>
+            <ion-list ng-if="vm.setfalse">
+                <ion-radio ng-repeat="adress in vm.selected_customer.customer_address" ng-model="vm.address_id" ng-value="adress.address_id" ng-click="vm.setAddressId(adress)">
+                    {{ adress.addressLine1 }} {{ adress.addressLine2 }} {{adress.addressLine3 }} {{ adress.city }}
+                </ion-radio>
+            </ion-list>
+
+        </div>
+
+
+
+    </ion-content>
+    <!--   <ion-footer-bar class="bar bar-footer" ng-if="vm.setfalse">
+
+            <button type="submit" ng-disabled="address_form.$invalid" ng-click="vm.addAddress()" class="button button-light icon-right  ion-arrow-right-c ">
+                Save Address
+            </button>
+          </ion-footer-bar> -->
+</ion-modal-view>

@@ -1,0 +1,457 @@
+<ion-view view-title="Customers" ng-controller="reportsCtrl as vm" class="Customers orders reservations" ng-init="vm.tab = 1">
+
+    <ion-content class="padding" overflow-scroll="true">
+        <div class="notShowinprinter">
+            <div class="row">
+                <div class="col col-25">
+                    <div class="card blue panel info-box">
+                        <div class="panel-body">
+                            <div class="info-box-stats">
+                                <p class="counter"><span ng-if="vm.reports.today_sales_count">{{ vm.reports.today_sales_count | number :2 }}</span>
+                                    <span ng-if="!vm.reports.today_sales_count">0</span>
+                                    <ion-spinner icon="crescent" class="spinner-stable" ng-show="vm.spinner"></ion-spinner>
+                                </p>
+                                <span class="info-box-title">Today Sale</span>
+                                <span class="info-box-title">Yesterday : <b>
+                            <span ng-if="vm.reports.yesterday_sales_count">
+                            {{ vm.reports.yesterday_sales_count | number :2 }}
+                        </span>
+                                <span ng-if="!vm.reports.yesterday_sales_count">0</span>
+                                <ion-spinner icon="crescent" class="spinner-stable" ng-show="vm.spinner"></ion-spinner>
+                                </b>
+                                </span>
+                            </div>
+                            <div class="info-box-icon">
+                                <i class="icon ion-arrow-down-c"></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-25">
+                    <div class="card green panel info-box">
+                        <div class="panel-body">
+                            <div class="info-box-stats">
+                                <p class="counter">
+                                    <span ng-if="vm.reports.last7days_sales_count_avg">
+                            {{ vm.reports.last7days_sales_count_avg | number :2 }}
+                            </span>
+                                    <span ng-if="!vm.reports.last7days_sales_count_avg">0</span>
+                                    <ion-spinner icon="crescent" class="spinner-stable" ng-show="vm.spinner"></ion-spinner>
+                                </p>
+                                <span class="info-box-title">Last 7 days Average</span>
+                                <span class="info-box-title">Total : <b>{{ vm.reports.last7days_sales_count | number :2 }}
+                             <span ng-if="!vm.reports.last7days_sales_count">0</span>
+                                <ion-spinner icon="crescent" class="spinner-stable" ng-show="vm.spinner"></ion-spinner>
+                                </b>
+                                </span>
+                            </div>
+                            <div class="info-box-icon">
+                                <i class="icon ion-arrow-down-c"></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-25">
+                    <div class="card pink panel info-box">
+                        <div class="panel-body">
+                            <div class="info-box-stats">
+                                <p class="counter">
+                                    <span ng-if="vm.reports.last30days_sales_avg">
+                            {{ vm.reports.last30days_sales_avg | number :2 }}
+                           </span>
+                                    <span ng-if="!vm.reports.last30days_sales_avg">0</span>
+                                    <ion-spinner icon="crescent" class="spinner-stable" ng-show="vm.spinner"></ion-spinner>
+                                </p>
+                                <span class="info-box-title">Last 30 days Average</span>
+                                <span class="info-box-title">Total : <b>{{ vm.reports.last30days_sales_count | number :2 }}
+                            <span ng-if="!vm.reports.last30days_sales_count">0</span>
+                                <ion-spinner icon="crescent" class="spinner-stable" ng-show="vm.spinner"></ion-spinner>
+                                </b>
+                                </span>
+                            </div>
+                            <div class="info-box-icon">
+                                <i class="icon ion-arrow-up-c"></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-25">
+                    <div class="card orange panel info-box">
+                        <div class="panel-body">
+                            <div class="info-box-stats">
+                                <p class="counter">
+                                    <span ng-if="vm.reports.lastyear_sales_count_avg">
+                            {{ vm.reports.lastyear_sales_count_avg | number :2 }}
+                            </span>
+                                    <span ng-if="!vm.reports.lastyear_sales_count_avg">0</span>
+                                    <ion-spinner icon="crescent" class="spinner-stable" ng-show="vm.spinner"></ion-spinner>
+                                </p>
+                                <span class="info-box-title">Last year Average</span>
+                                <span class="info-box-title">Total:  <b>{{ vm.reports.lastyear_sales_count | number :2 }}
+                            <span ng-if="!vm.reports.lastyear_sales_count">0</span>
+
+                                <ion-spinner icon="crescent" class="spinner-stable" ng-show="vm.spinner"></ion-spinner>
+                                </b>
+                                </span>
+                            </div>
+                            <div class="info-box-icon">
+                                <i class="icon ion-arrow-up-c"></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form ng-submit="vm.submit()">
+                <div class="row reports">
+                    <div class="col col-25 increase-by-seven">
+                        <div id="pos-options">
+                            <div id="select-report">
+                                <select ng-model="type" ng-change="vm.changeType(type)">
+                        <option  value="">Select report type</option>
+                        <option value="summary" >Sales Summary</option>
+                        <option value="item" >Sales by Item</option>
+                        <option value="category">Sales by Category</option>
+                        <option  value="all">Detail Report</option>
+                        </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-25">
+                        <div id="pos-options">
+                            <div class="item item-icon-left" ion-datetime-picker ng-model="vm.datefrom" ng-change="vm.set_datefrom(vm.datefrom)">
+                                <i class="icon ion-calendar positive"></i>
+                                
+                                <strong>From :{{vm.datefrom| date: "yyyy/MM/dd H:mm"}}</strong>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col col-25">
+                        <div id="pos-options">
+                            <div class="item item-icon-left" ion-datetime-picker ng-model="vm.dateto" ng-change="vm.set_dateto(vm.dateto)">
+                                <i class="icon ion-calendar positive"></i>
+                                <strong>TO :    {{vm.dateto| date: "yyyy/MM/dd H:mm"}}</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col col-25 form-submit">
+                        <button type="submit" class="button button-full ion-ios-search"> Search
+                 <ion-spinner icon="crescent" class="spinner-stable" ng-show="vm.requestsend" ></ion-spinner>
+               </button>
+                    </div>
+
+                </div>
+            </form>
+
+            <div class="row details-reports">
+
+                <div class="col">
+                    <div class="card-box table-responsive">
+
+                        <table class="table table-striped table-bordered" ng-if="vm.reports_details.sales_by_items.length > 0">
+                            <h2 ng-if="vm.reports_details.sales_by_items.length > 0">Sales By Items </h2>
+                            <thead>
+                                <tr>
+                                    <th class="text-left"><strong>Item Name</strong></th>
+                                    <th class="text-right"><strong>Items sold</strong></th>
+                                    <th class="text-right"><strong>Net Sales</strong></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr ng-repeat="report in vm.reports_details.sales_by_items">
+                                    <td class="text-left">{{ report.menu_item_name }} ({{ report.price_title }})</td>
+                                    <td class="text-right">{{ report.items_count }}</td>
+                                    <td class="text-right">{{ report.menu_items_total }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2" class="text-right"><b>{{ vm.total_items_count  }}</b></td>
+                                    <td class="text-right"><b>Rs. {{ vm.totalsale | number :2  }}</b></td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+
+                        <table class="table table-striped table-bordered" ng-if="vm.reports_details.sales_by_categories.length > 0">
+                            <h2 ng-if="vm.reports_details.sales_by_categories.length > 0">Sales By Category </h2>
+                            <thead>
+                                <tr>
+
+                                    <th class="text-left"><strong>Categry</strong></th>
+                                    <th class="text-right"><strong>Items sold</strong></th>
+                                    <th class="text-right"><strong>Net sale</strong></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr ng-repeat="report in vm.reports_details.sales_by_categories">
+
+                                    <td class="text-left">{{ report.category_name }}</td>
+                                    <td class="text-right">{{ report.items_count }}</td>
+                                    <td class="text-right">{{ report.category_total }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2" class="text-right"><b>{{ vm.cattotal_items_count  }}</b></td>
+                                    <td class="text-right"><b>Rs. {{ vm.cattotalamount_count | number :2  }}</b></td>
+
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+
+                        <table class="table table-striped table-bordered" ng-if="vm.reports_details.sales_by_summary.length > 0">
+                            <h2 ng-if="vm.reports_details.sales_by_summary.length > 0">Sales Summery </h2>
+
+                            <thead>
+                                <tr>
+                                    <th class="text-left"><strong>Date</strong></th>
+                                    <th class="text-right"><strong>Delivery Charges</strong></th>
+                                    <th class="text-right"><strong>Discounts</strong></th>
+                                    <th class="text-right"><strong>Tax</strong></th>
+                                    <th class="text-right"><strong>Net Sales</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="report in vm.reports_details.sales_by_summary">
+                                    <td class="text-left">{{ report.date }}</td>
+                                    <td class="text-right">{{ report.total_sales_shipping_charges | number }}</td>
+                                    <td class="text-right">{{ report.total_sales_discount | number }}</td>
+                                    <td class="text-right">{{ report.total_sales_tax | number }}</td>
+                                    <td class="text-right">{{ report.total_sales | number }}</td>
+                                </tr>
+                                <tr>
+
+                                    <td colspan="2" class="text-right"><b>Rs. {{ vm.summery_total_sales_shipping_charges | number}}</b></td>
+
+                                    <td class="text-right"><b>Rs. {{ vm.summery_total_sales_discount | number}}</b></td>
+                                    <td class="text-right"><b>Rs. {{ vm.summery_total_sales_tax | number }}</b></td>
+                                    <td colspan="2" class="text-right"><b>Rs. {{ vm.summery_total_sales | number }}</b></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                        <div>
+                            <div class="emoty_cart text-center" ng-show="!vm.reports_details.sales_by_items && !vm.reports_details.sales_by_categories && !vm.reports_details.sales_by_summary">
+                                <i class="icon ion-arrow-graph-down-right"></i>
+                                <h2>No record Found</h2>
+                                <p class="padding">Please filter to find the results.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="report-button-float notShowinprinter">
+            <div class="button button-positive" ng-click="vm.printByItem()" ng-if="vm.reports_details.flag == 'item' "><i class="icon ion-printer"></i> Print</div>
+
+
+            <div class="button button-positive" ng-click="vm.printByCategoriesItem()" ng-if="vm.reports_details.flag == 'category' "><i class="icon ion-printer"></i> Print</div>
+
+            <div class="button button-positive" ng-click="vm.printBysummary()" ng-if="vm.reports_details.flag == 'summary' "><i class="icon ion-printer"></i> Print</div>
+
+
+            <div class="button button-positive" ng-click="vm.printByDetail()" ng-if="vm.reports_details.flag == 'all' "><i class="icon ion-printer"></i> Print</div>
+        </div>
+
+        <!-- print table for  Sales By Items -->
+        <div style="display: none;" id="print_by_item">
+            <table>
+                <h2>Sales By Items </h2>
+                <p>From : {{vm.datefrom| date: "yyyy/MM/dd H:mm"}}</p>
+                <p>TO : {{vm.dateto| date: "yyyy/MM/dd H:mm"}}</p>
+                <thead>
+                    <tr>
+                        <th style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Name</strong></th>
+                        <th style="border: 1px solid #959595; padding: 3px; width:15%;" class="text-right"><strong>sold</strong></th>
+                        <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>N.Sales</strong></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="report in vm.reports_details.sales_by_items">
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ report.menu_item_name }} ({{ report.price_title }})</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.items_count }}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.menu_items_total }}</td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid #959595; padding: 3px;" colspan="2" class="text-right"><b>{{ vm.total_items_count  }}</b></td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right"><b>{{ vm.totalsale }}</b></td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+
+        <!-- print table for  Sales By category -->
+        <div style="display: none;" id="print_by_categories">
+            <table>
+                <h2>Sales By Category </h2>
+                <p>From : {{vm.datefrom| date: "yyyy/MM/dd H:mm"}}</p>
+                <p>TO : {{vm.dateto| date: "yyyy/MM/dd H:mm"}}</p>
+                <thead>
+                    <tr>
+                        <th style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Categry</strong></th>
+                        <th style="border: 1px solid #959595; padding: 3px; width:20%;" class="text-right"><strong>sold</strong></th>
+                        <th style="border: 1px solid #959595; padding: 3px; width:20%;" class="text-right"><strong>N.sale</strong></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="report in vm.reports_details.sales_by_categories">
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ report.category_name }}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.items_count }}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.category_total }}</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #959595; padding: 3px;" colspan="2" class="text-right"><b>{{ vm.cattotal_items_count  }}</b></td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right"><b>{{ vm.cattotalamount_count }}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- print table for  Sales Summery -->
+        <div style="display: none;" id="print_by_summary">
+            <table>
+                <h2>Sales Summery </h2>
+                <p>From : {{vm.datefrom| date: "yyyy/MM/dd H:mm"}}</p>
+                <p>TO : {{vm.dateto| date: "yyyy/MM/dd H:mm"}}</p>
+                <thead>
+                    <tr>
+                        <th class="text-left" style="border: 1px solid #959595; padding: 3px; width:50%;"><strong>Date</strong></th>
+                        <th class="text-right" style="border: 1px solid #959595; padding: 3px; width:10%;"><strong>D.C</strong></th>
+                        <th class="text-right" style="border: 1px solid #959595; padding: 3px; width:10%;"><strong>Dis</strong></th>
+                        <th class="text-right" style="border: 1px solid #959595; padding: 3px; width:10%;"><strong>Tax</strong></th>
+                        <th class="text-right" style="border: 1px solid #959595; padding: 3px; width:20%;"><strong>N.Sales</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="report in vm.reports_details.sales_by_summary">
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ report.date }}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.total_sales_shipping_charges | number }}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.total_sales_discount | number }}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.total_sales_tax | number }}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.total_sales | number :1 }}</td>
+                    </tr>
+                    <tr>
+
+                        <td style="border: 1px solid #959595; padding: 3px;" colspan="2" class="text-right"><b>{{ vm.summery_total_sales_shipping_charges | number }}</b></td>
+
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right"><b>{{ vm.summery_total_sales_discount | number }}</b></td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right"><b>{{ vm.summery_total_sales_tax | number }}</b></td>
+                        <td style="border: 1px solid #959595; padding: 3px;" colspan="2" class="text-right"><b>{{ vm.summery_total_sales | number }}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="display: none;" id="print_by_detail">
+
+            <table>
+                <h2>Sales Summery </h2>
+                <p>From : {{vm.datefrom| date: "yyyy/MM/dd H:mm"}}</p>
+                <p>TO : {{vm.dateto| date: "yyyy/MM/dd H:mm"}}</p>
+                <thead>
+                    <tr>
+                        <th class="text-left" style="border: 1px solid #959595; padding: 3px; width:50%;"><strong>Date</strong></th>
+                        <th class="text-right" style="border: 1px solid #959595; padding: 3px; width:10%;"><strong>D.C</strong></th>
+                        <th class="text-right" style="border: 1px solid #959595; padding: 3px; width:10%;"><strong>Dis</strong></th>
+                        <th class="text-right" style="border: 1px solid #959595; padding: 3px; width:10%;"><strong>Tax</strong></th>
+                        <th class="text-right" style="border: 1px solid #959595; padding: 3px; width:20%;"><strong>N.Sales</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="report in vm.reports_details.sales_by_summary">
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ report.date }}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.total_sales_shipping_charges | number }}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.total_sales_discount | number }}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.total_sales_tax | number }}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.total_sales | number :1 }}</td>
+                    </tr>
+                    <tr>
+
+                        <td style="border: 1px solid #959595; padding: 3px;" colspan="2" class="text-right"><b>{{ vm.summery_total_sales_shipping_charges | number }}</b></td>
+
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right"><b>{{ vm.summery_total_sales_discount | number }}</b></td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right"><b>{{ vm.summery_total_sales_tax | number }}</b></td>
+                        <td style="border: 1px solid #959595; padding: 3px;" colspan="2" class="text-right"><b>{{ vm.summery_total_sales | number }}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table>
+                <h2>Sales By Items </h2>
+                <p>From : {{vm.datefrom| date: "yyyy/MM/dd H:mm"}}</p>
+                <p>TO : {{vm.dateto| date: "yyyy/MM/dd H:mm"}}</p>
+                <thead>
+                    <tr>
+                        <th style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Name</strong></th>
+                        <th style="border: 1px solid #959595; padding: 3px; width:15%;" class="text-right"><strong>sold</strong></th>
+                        <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>N.Sales</strong></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="report in vm.reports_details.sales_by_items">
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ report.menu_item_name }} ({{ report.price_title }})</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.items_count }}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.menu_items_total }}</td>
+                    </tr>
+
+                    <tr>
+                        <td style="border: 1px solid #959595; padding: 3px;" colspan="2" class="text-right"><b>{{ vm.total_items_count  }}</b></td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right"><b>{{ vm.totalsale }}</b></td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+
+            <table>
+                <h2>Sales By Category </h2>
+                <p>From : {{vm.datefrom| date: "yyyy/MM/dd H:mm"}}</p>
+                <p>TO : {{vm.dateto| date: "yyyy/MM/dd H:mm"}}</p>
+                <thead>
+                    <tr>
+                        <th style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Categry</strong></th>
+                        <th style="border: 1px solid #959595; padding: 3px; width:20%;" class="text-right"><strong>sold</strong></th>
+                        <th style="border: 1px solid #959595; padding: 3px; width:20%;" class="text-right"><strong>N.sale</strong></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="report in vm.reports_details.sales_by_categories">
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ report.category_name }}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.items_count }}</td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.category_total }}</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #959595; padding: 3px;" colspan="2" class="text-right"><b>{{ vm.cattotal_items_count  }}</b></td>
+                        <td style="border: 1px solid #959595; padding: 3px;" class="text-right"><b>{{ vm.cattotalamount_count }}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+
+        </div>
+
+    </ion-content>
+</ion-view>

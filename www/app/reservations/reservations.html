@@ -1,0 +1,83 @@
+<ion-view view-title="Reservations" class="Customers orders reservations" ng-controller="reservationsCtrl as vm">
+
+    <ion-content overflow-scroll="true">
+
+        <div  class="row customerstyle">
+            <div class="col col-33">
+                <a class="button button-small button-block  button-balanced" ng-click="vm.addReservation()"><i class="icon ion-person-add"></i> Add Reservation</a>
+                <div class="list list-inset search-box">
+                    <label class="item item-input">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input type="text" ng-model="search" placeholder="Search">
+                  </label>
+                </div>
+                <ion-scroll id="pos-customers" overflow-scroll="false" direction="y" scrollbar-x="true" has-bouncing="true">
+                    <ul class="list ">
+                        <li ng-repeat="reservation in vm.reservations | filter:search:strict" class="card" ng-click="vm.showReservationDetail(reservation)" ng-class="{active: reservation.id == vm.reservasionDetail.id}">
+                            <a class="item">
+                                <span ng-show="reservation.new  == 0" class="badge badge-energized new-label">New</span>
+                                <h3><strong>{{ reservation.name }}</strong></h3>
+                                <p>Booking Persons <strong>( {{ reservation.covers}} )</strong></p>
+                            </a>
+                        </li>
+                    </ul>
+                </ion-scroll>
+            </div>
+
+            <div class="col col-67 card reservation-detail" >
+                <div class="data-content"  ng-show="vm.reservations.length > 0">
+                <h3 class="title">Reservation</h3>
+
+                <div class="card reservation-card">
+
+                    <div class="reservations-content">
+                        
+                        <h2>{{ vm.reservasionDetail.name }}</h2>
+                        <p>{{ vm.reservasionDetail.booking_date | date : format : timezone }} </p>
+
+                        <table class="table" style="margin: auto;width: 85%;">
+                            <tr>
+                                <td class="text-left"><strong>Booking Type</strong></td>
+                                <td class="text-right">{{ vm.reservasionDetail.booking_type }}</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Mobile</td>
+                                <td class="text-right">{{ vm.reservasionDetail.mobile }}</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Persons</td>
+                                <td class="text-right">{{ vm.reservasionDetail.persons }}</strong></td>
+                            </tr>
+                             <tr>
+                                <td class="text-left"><strong>Email</td>
+                                <td class="text-right">{{ vm.reservasionDetail.email }}</strong></td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+              
+
+                </div>
+
+                
+            </div>
+             <div class="text-center empty_cart empty" ng-show="!vm.reservations.length > 0">
+                        <img src="img/empty_cart.png">
+                        <h2> No  Reservation Found </h2>
+                       <p> Reservation will be received through Website, Mobile App.</p>
+                       
+                    </div>
+            </div>
+        </div>
+
+
+        <div ng-show="vm.reservations.length<0">
+            <!-- <div ng-show="vm.kot_list.length===0" class="notShowinprinter"> -->
+
+            <h2 class="empty_cart"> No Reservation Found <i class="icon ion-alert"></i></h2>
+            <!-- </div> -->
+        </div>
+
+    </ion-content>
+</ion-view>

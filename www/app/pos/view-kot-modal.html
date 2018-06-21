@@ -1,0 +1,56 @@
+<ion-modal-view id="kot-modal">
+  <ion-header-bar>
+    <h1 class="title"> Kitchen Order Ticket </h1>
+    <button class="button  button-icon icon close-button" ng-click="kotModalHide()"><i class="ion-close-circled"></i>
+    </button>
+  </ion-header-bar>
+  <ion-content>
+
+    <div id="printSection">
+      <div class="row">
+        <div class="col">
+          <div class="kot-header">
+            <h2 class="text-center"><strong>{{ cart.kot_unique_id }}</strong></h2>
+            <p class="text-center"></p>
+            <div class="text-center">
+              <span>{{ vm.momentFromNow(cart.kot_datetime) }}</span>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+            <tr>
+              <th class="text-left"><strong> Item(s) </strong></th>
+              <th class="text-right"><strong>Quantity</strong></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in cart.items">
+              <td>
+                {{item.menu_item_name}} ({{item.prices[0].title}})
+
+                <ul ng-repeat="option in item.menu_options">
+                  <li><strong>{{option.option_name}}</strong></li>
+                  <div ng-if="option.option_type=='checkbox'">
+                    <div class="option-child" ng-repeat="(key, value) in option.fulla" ng-if="value">
+                      <i class="icon ion-android-checkbox"></i> {{value.item_name }}
+                    </div>
+                  </div>
+                  <div class="option-child" ng-if="option.option_type=='radio'">
+                    <i class="icon ion-android-radio-button-on"></i> {{option.selectedByName}}
+                  </div>
+                </ul>
+
+              </td>
+              <td class="text-right"> {{item.quantity}}</td>
+            </tr>
+            </tbody>
+            <tfoot></tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+
+
+</ion-modal-view>

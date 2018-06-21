@@ -1,0 +1,123 @@
+<ion-modal-view   class="itemmodel reservationimodel" style="height: 380px;">
+    <ion-header-bar class="bar bar-header bar-positive has-header">
+        <h1 class="title "> Add Reservation </h1>
+        <button class="button  button-icon icon close-button" ng-click="vm.hideCustomerModal()"><i
+      class="ion-close-circled"></i></button>
+    </ion-header-bar>
+    <ion-content scroll="true" class="padding" >
+              <div class="padding tablebpooking-style">
+            <div class='process-one' ng-show="vm.stepOne">
+               
+                <h2>Book A Table</h2>
+
+                <p class="">We are flexible for our customers so, just fill in the boxes below and your table will be
+                    reserved.</p>
+
+                <label class="item item-input">
+                    <select class="select-design" ng-model="vm.covers">
+                        <option ng-repeat="person in  vm.numberOfPerson()" value="{{person}}">{{person}} Person(s)
+                        </option>
+                    </select>
+                </label>
+
+                <label class="item item-input">
+                    <select class="select-design" ng-model="vm.booking_date">
+                        <option ng-repeat="date in vm.nextSevenDays()" value="{{date}}">{{date}}</option>
+                    </select>
+                </label>
+
+                <label class="item item-input">
+
+                    <select class="select-design" ng-model="vm.booking_type" ng-change="vm.type_time_list()">
+                        <option ng-repeat="type in vm.booking_types" value="{{type.booking_type_id}}">
+                            {{type.title}}
+                        </option>
+                    </select>
+                </label>
+
+                <div class="row responsive-sm">
+                    <div class="col" ng-show="vm.is_show_timing " ng-bind-html="vm.buffet_timing">
+                    </div>
+                </div>
+                <label class="item item-input" ng-show="vm.is_show_timing_list">
+                  
+                    <select class="select-design" ng-model="vm.booking_timing">
+                        <option value="5:00 PM">5:00 PM</option>
+                        <option value="6:00 PM">6:00 PM</option>
+                        <option value="7:00 PM">7:00 PM</option>
+                        <option value="8:00 PM">8:00 PM</option>
+                        <option value="9:00 PM">9:00 PM</option>
+                        <option value="10:00 PM">10:00 PM</option>
+                        <option value="11:00 PM">11:00 PM</option>
+                        <option value="12:00 AM">12:00 AM</option>
+                        <option value="1:00 AM">01:00 AM</option>
+                        <option value="2:00 AM">02:00 AM</option>
+                        <option value="3:00 AM">03:00 AM</option>
+                    </select>
+                </label>
+    <button class="button button-small button-balanced" ng-click="vm.find_availability()">Find Availability </button>
+            </div>
+            <div ng-show="vm.stepNotFound" class="noAvailable text-left" >
+              <br>
+                <h3>Table is not available!</h3>
+            </div>
+                <div class='process-two' ng-show="vm.stepTwo">
+                    <form name="bookingForm" novalidate>
+
+                        <label class="item item-input">
+                            <input type="text" placeholder="First Name" ng-model="vm.first_name" required>
+                            <i class="icon ion-alert-circled error" style="color:#900909  !important"></i> 
+                        </label>
+                        <label class="item item-input">
+                            <input type="text" placeholder="Last Name" ng-model="vm.last_name" required>
+                            <i class="icon ion-alert-circled error" style="color:#900909  !important"></i> 
+                        </label>
+                        <label class="item item-input">
+                            <input 
+                            type="email" 
+                            placeholder="example@example.com" 
+                            ng-model="vm.email" 
+                            required>
+                            <i class="icon ion-alert-circled error" style="color:#900909  !important"></i> 
+                        </label>
+                        <label class="item item-input">
+                            <input 
+                                type="tel" 
+                                placeholder="0300 123 4567" 
+                                ng-model="vm.mobile"
+                                ng-pattern="/^\+?\d{11}$/"
+                                required>
+                                <i class="icon ion-alert-circled error" style="color:#900909  !important"></i>  
+                        </label>
+
+                        <button 
+                            class="button button-small button-balanced" 
+                            ng-click="vm.book_table()"
+                            ng-disabled="bookingForm.$invalid"> Book Table
+                        </button>
+
+                    </form>
+                </div>
+
+                <div class='process-three' ng-show="vm.stepThree">
+                    <div class="card">
+                        <div class="item item-text-wrap">
+                            <i class="icon ion-checkmark-round"></i>
+
+                            <h2>Thank You! </h2>
+
+                            <p>Your Request has been received</p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+    </ion-content>
+       <ion-footer-bar class="bar bar-footer">
+
+            <button   class="button button-light  " ng-click="vm.hideCustomerModal()">
+               Not Now
+            </button>
+          </ion-footer-bar>
+</ion-modal-view>
