@@ -370,17 +370,16 @@ video {
 }
 
 #login-wrapper {
-    background: rgba(255, 255, 255, 0.8);
-    width: 600px;
+    background: #fff;
+    width: 480px;
     margin: 150px auto 0;
     padding: 40px;
     box-shadow: 0 0 7px -2px #000000;
-    border-radius: 10px;
 }
 
 #logo img {
-    width: 200px;
-    margin: 20px auto;
+   width: 36%;
+    margin-bottom: 10px;
 }
 
 #login-page::before {
@@ -399,12 +398,11 @@ video {
 }
 
 #login-page .item-input {
-    border: 1px solid rgb(97, 96, 96);
-    border-radius: 0;
-    box-shadow: none;
-    height: 50px;
-    margin: 2px 0;
-    padding: 0;
+
+
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    margin-bottom: 12px;
 }
 
 #login-page .item-input .icon {
@@ -436,10 +434,7 @@ video {
     border-right: 1px solid rgb(97, 96, 96);
 }
 
-#login-page .input {
-    min-width: 70%;
-    padding: 0 8px;
-}
+
 
 #login-page .input:focus,
 #login-page .input:hover,
