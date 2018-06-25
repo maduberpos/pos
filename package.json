@@ -1,6 +1,6 @@
 {
   "name": "MaduberEPOS",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Maduber EPOS",
   "main": "main.js",
   "scripts": {
@@ -12,7 +12,12 @@
     "appId":"pk.maduber.epos",
     "directories": {
       "buildResources": "."
+    },
+    "win":{
+      "publish":["github"],
+      "publisherName":"MaduberLtd"
     }
+
   },
   "repository": "https://github.com/maduberpk/pos",
   "keywords": [],
