@@ -3804,6 +3804,10 @@ button {
     top: 5%;
     width: 32%;
 }
+.printer-logo{
+    width:100px;
+    height:100px;
+}
 
 #kot-modal .text-center>strong {
     font-size: 20px;
@@ -5040,6 +5044,7 @@ button.printorder {
         background: #fff;
         margin: 0 auto;
         font-family: Arial, Helvetica, sans-serif;
+        
     }
     #printWrapper table {
         width: 100% !important;
