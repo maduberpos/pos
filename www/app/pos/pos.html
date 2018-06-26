@@ -1,5 +1,5 @@
 <ion-view ng-controller="pos as vm" title="{{vm.venue_detail.name}} - POS">
-    <ion-content class=" pos-content bg-style-01" has-bouncing="false">
+    <ion-content class="pos-content bg-style-01" has-bouncing="false">
         <div class="pos-head">
             <div class="row">
                 <div class="col col-60">
@@ -37,7 +37,6 @@
                             <ion-scroll id="pos-menu-list" style="height:{{ vm.viewHight- 347}}px;" overflow-scroll="false" direction="y" scrollbar-y="true" has-bouncing="true" delegate-handle="MenuItems">
                                 <ul>
                                     <li ng-repeat="item in vm.menu | orderBy:'menu_item_name'" ng-click="vm.add_item(item)">
-
                                         <div class="jm-item second">
                                             <div class="jm-item-wrapper ">
                                                 <div ng-show="item.discount" class="item_discount"><span>{{item.discount}}%</span></div>
@@ -59,9 +58,7 @@
                                 </ul>
                             </ion-scroll>
                         </div>
-
                     </div>
-
                 </div>
                 <!-- ......................end............... -->
 
@@ -270,10 +267,15 @@
                         </div>
                     </div>
                 </div>
+<<<<<<< HEAD
             </div>
         </div>
 
         <div id="pos-bill-print" style="display: block;">
+=======
+            </div></div>
+        <div id="pos-bill-print" style="display: none;">
+>>>>>>> 3141301271c169e0f529573682cb8745eb624940
             <p style="text-align: center;">
             <img class="printer-logo"   ng-src="{{vm.venue_detail.pos_receipt_logo}}" />
             </p>
@@ -492,10 +494,7 @@
                 <p class="text-center">0300 5292 723</p>
 
             </div>
-            <!--End InvoiceBot-->
-        </div>
-
-
+            <!--End InvoiceBot--></div>
         <div id="kot-bill-print" style="display: none;">
 
             <!--End Invoice Mid-->
@@ -564,7 +563,6 @@
                     </p>
                 </div>
             </div>
-            <!--End InvoiceBot-->
-        </div>
+            <!--End InvoiceBot--></div>
     </ion-content>
 </ion-view>
