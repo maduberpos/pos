@@ -4995,9 +4995,10 @@ button.printorder {
         page-break-before: always;
         width: 301.36px;
         color: #000000;
+        font-family: sans-serif;
     }
     @page {
-        margin: 0px 10px 0 10px;
+        margin: 0px 18px 0 18px;
     
     }
     /* Reset overflow */
@@ -5036,6 +5037,7 @@ button.printorder {
     p {
         color: black !important;
         margin: 0;
+        font-family: sans-serif;
     }
     span {
         color: black !important;
@@ -5046,12 +5048,14 @@ button.printorder {
         z-index: 10000;
         background: #fff;
         margin: 0 auto;
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: sans-serif;
+        font-size: 14px;
         width: 100% !important;
         
     }
     #printWrapper table {
         width: 100% !important;
+       
     }
     .qr {
         position: relative;

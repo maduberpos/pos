@@ -114,20 +114,25 @@
                                                 <ul class="item_options">
                                                     <li ng-repeat="option in item.menu_options_object">
                                                         <strong>{{option.option_name}}</strong>
-                                                        <div ng-if="option.option_type=='checkbox'">
-                                                            <div ng-repeat="(key1, value) in option.selectedByName" ng-if="value">
-                                                                {{key1}}
+                                                        <div class="row" ng-if="option.option_type=='checkbox'">
+                                                            <div class="col col-80">
+                                                                <p ng-repeat="(key1, value) in option.selectedByName" ng-if="value">{{key1}}</p>
                                                             </div>
-                                                            <!-- <span ng-repeat="(key, value) in option.selectedItemPrice" ng-if="value">
-                                                        {{value}}
-                                                        </span> -->
+                                                            <div class="col col-20">
+                                                                <p ng-repeat="(key, value) in option.selectedItemPrice">+{{value | number :0}}</p>
+                                                            </div>
 
                                                         </div>
 
-                                                        <div class="" ng-if="option.option_type=='radio'">
-
-                                                            {{option.selectedByName}}
-                                                            <!-- <span class="option_item_price" ng-if="option.selectedItemPrice!=0">+{{option.selectedItemPrice}}</span> -->
+                                                        <div class="row" ng-if="option.option_type=='radio'">
+                                                            <div class="col col-80">
+                                                                <p>{{option.selectedByName}}</p>
+                                                            </div>
+                                                            <div class="col col-20">
+                                                                <p>+{{option.selectedItemPrice | number :0}}</p>
+                                                            </div>
+                                                            <!-- {{option.selectedByName}}
+                                                            <span class="option_item_price">+{{option.selectedItemPrice}}</span> -->
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -330,7 +335,7 @@
 
 
                                 <div class="option-list" style="width: 100%; float:left;">
-                                    <div ng-repeat="option in  item.menu_options">
+                                    <div ng-repeat="option in  item.menu_options_object">
                                         <div class="">
                                             <strong style="font-size: 12px;"><p>{{option.option_name}}</p></strong>
                                         </div>
