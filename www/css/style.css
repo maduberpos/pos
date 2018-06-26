@@ -3804,6 +3804,10 @@ button {
     top: 5%;
     width: 32%;
 }
+.printer-logo{
+    width:100px;
+    height:100px;
+}
 
 #kot-modal .text-center>strong {
     font-size: 20px;
@@ -4989,9 +4993,11 @@ button.printorder {
         margin: 0px;
         padding: 0;
         page-break-before: always;
+        width: 301.36px;
     }
     @page {
-        margin: 0 18px 0px 0px;
+        margin: 0px 10px 0 10px;
+    
     }
     /* Reset overflow */
     html,
@@ -5040,7 +5046,8 @@ button.printorder {
         background: #fff;
         margin: 0 auto;
         font-family: Arial, Helvetica, sans-serif;
-        /* width: 301.36px; */
+        width: 100% !important;
+        
     }
     #printWrapper table {
         width: 100% !important;
@@ -5070,7 +5077,7 @@ button.printorder {
     #printWrapper #logo {
         height: 150px;
         width: 113px;
-        margin: auto 10px;
+        margin:  10px auto;
     }
     #printWrapper #venue-name {
         font-size: 20px;

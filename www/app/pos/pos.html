@@ -18,9 +18,7 @@
                     </div>
                     <!-- {{vm.showActions}} -->
                     <div class="card">
-
                         <div class="item item-text-wrap second_row">
-
                             <div class="header">
                                 <h2 class="title-center">{{vm.title}}</h2>
                                 <div id="search-bar">
@@ -220,13 +218,11 @@
 
                                     <div class="item item-divider">
                                         <div class="row">
-
                                             <div class="col col-100">
                                                 <strong>Total Payable
                                                     <span class="right">{{vm.totalCost | number :0}}</span>
                                                 </strong>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -277,10 +273,10 @@
             </div>
         </div>
 
-        <div id="pos-bill-print" style="display: none;">
-
-            <img style="width:100px; height:100px; margin: 0 75px; filter: gray; filter: grayscale(100%);" ng-src="{{vm.venue_detail.pos_receipt_logo}}" />
-
+        <div id="pos-bill-print" style="display: block;">
+            <p style="text-align: center;">
+            <img class="printer-logo"   ng-src="{{vm.venue_detail.pos_receipt_logo}}" />
+            </p>
 
             <h2 style="font-size: 14px; margin: 0; text-align: center;">{{vm.venue_detail.name}}</h2>
             <p style="text-align: center;">
@@ -298,7 +294,6 @@
                     <tr>
                         <td class="text-left" ng-show="vm.cart.order_type != ''" style=" padding: 3px; width:50%;">Order Type : {{vm.cart.order_type}}</td>
                         <td class="text-right" ng-show="vm.server_name != ''" style=" padding: 3px; width:50%;">Server : {{vm.server_name}}</td>
-
                     </tr>
                     <tr>
                         <td class="text-left" style=" padding: 3px; width:50%;">Date : {{ vm.date | moment: 'format': 'MMM Do YYYY ' }}</td>
@@ -308,8 +303,6 @@
                         <td class="text-left" style=" padding: 3px; width:50%;">Payment by : {{ payment_method }}</td>
                         <td class="text-right" ng-show="vm.cart.table_id != '0'" style=" padding: 3px; width:50%;">Table no # {{vm.cart.table_id}} </td>
                     </tr>
-
-
                 </thead>
             </table>
             <!--   ng-if="vm.cart.order_type === 'delivery'" -->
@@ -346,12 +339,7 @@
                                                 {{item.prices[0].price | number :0}} </p>
                                         </div>
                                     </div>
-
-
-
                                 </div>
-
-
                                 <div class="option-list" style="width: 100%; float:left;">
                                     <div ng-repeat="option in item.menu_options">
                                         <div class="">
