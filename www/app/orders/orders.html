@@ -37,7 +37,7 @@
                             <a class="item ">
                                 <!--  <span ng-show="customer.new  == 0" class="badge badge-energized new-label">New</span> -->
                                 <h3><strong>{{ order1.first_name }} {{ order1.last_name }}</strong> ( {{order1.mobile_number }})</h3>
-                                <p> Order # {{order1.order_id}} <time class="order-time">  {{order1.created_at | moment: 'format': 'MMM Do YYYY, h:mm:ss a'}}  </time> </p>
+                                <p ng-hide="order1.kot_unique_id != null"> Order # {{order1.order_id}} <time class="order-time">  {{order1.created_at | moment: 'format': 'MMM Do YYYY, h:mm:ss a'}}  </time> </p>
                                 <i class="icon ion-ios-arrow-right"></i>
                                 <!-- <span ng-show="order1.new  == 0" ng-click="vm.change_status(order1.order_id)" class="badge badge-energized new-label">New</span> -->
                                 <span class="status placed_status" ng-show="order1.order_status == 0">{{vm.OrderStatus(order1.order_status)}}</span>
