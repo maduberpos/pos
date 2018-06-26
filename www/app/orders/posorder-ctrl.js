@@ -3,9 +3,9 @@
     angular.module('app')
         .controller("PosOrderCtrl", PosOrderCtrl);
 
-    PosOrderCtrl.$inject = ["$scope", '$window', "configuration", "PrinterServices", "setting", "OrderServices", "$ionicModal", "loading", 'LocalStorage', '$ionicPopup', '$ionicTabsDelegate', '$ionicScrollDelegate', 'currentUser'];
+    PosOrderCtrl.$inject = ["$scope", '$window', "configuration", "CHECKPIN", "PrinterServices", "setting", "OrderServices", "$ionicModal", "loading", 'LocalStorage', '$ionicPopup', '$ionicTabsDelegate', '$ionicScrollDelegate', 'currentUser'];
 
-    function PosOrderCtrl($scope, $window, configuration, PrinterServices, setting, OrderServices, $ionicModal, loading, LocalStorage, $ionicPopup, $ionicTabsDelegate, $ionicScrollDelegate, currentUser) {
+    function PosOrderCtrl($scope, $window, configuration, CHECKPIN, PrinterServices, setting, OrderServices, $ionicModal, loading, LocalStorage, $ionicPopup, $ionicTabsDelegate, $ionicScrollDelegate, currentUser) {
         var vm = this;
 
         vm.venue_detail = setting.venue_setting();
@@ -629,29 +629,32 @@
         }
         vm.cancelOrder = function(order_id) {
             var data = {
-                order_id: order_id,
-                status: 1,
-                user_id: LocalStorage.get('USER').user_id,
-                business_day_id: LocalStorage.get('DAYSTART').id,
-                cashin_id: LocalStorage.get('cashin_id')
-            }
-            $ionicPopup.prompt({
-                title: 'Enter your secret PIN',
-                subTitle: '',
-                inputType: 'password',
-                inputPlaceholder: 'Your password'
-            }).then(function(res) {
-                console.log(res);
-                if (parseInt(res) === LocalStorage.get('USER').pin) {
-                    OrderServices.update_order_status(data).then(function(res) {
-                        // alert('Order has been cancelld');
-                        activate();
-                    });
-                } else {
-
-                    alert('wrong PIN');
+                    order_id: order_id,
+                    status: 1,
+                    user_id: LocalStorage.get('USER').user_id,
+                    business_day_id: LocalStorage.get('DAYSTART').id,
+                    cashin_id: LocalStorage.get('cashin_id')
                 }
-            });
+                // $ionicPopup.prompt({
+                //     title: 'Enter your secret PIN',
+                //     subTitle: '',
+                //     inputType: 'password',
+                //     inputPlaceholder: 'Your password'
+                // }).then(function(res) {
+                //     console.log(res);
+                //     if (parseInt(res) === LocalStorage.get('USER').pin) {
+                //         OrderServices.update_order_status(data).then(function(res) {
+                //             // alert('Order has been cancelld');
+                //             activate();
+                //         });
+                //     } else {
+
+            //         // alert('wrong PIN');
+            //     }
+
+            // });
+
+            console.log(CHECKPIN.prompt());
 
         }
 
