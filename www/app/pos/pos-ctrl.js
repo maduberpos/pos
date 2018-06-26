@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('app')
-        .controller('pos', ['$rootScope', "$http", 'configuration', 'CustomersServices', 'currentUser', '$scope', 'webFrame', 'MenuServices', 'PosServices', 'modalService', 'LocalStorage', 'setting', '$ionicScrollDelegate', '$ionicPopup', '$ionicModal', 'ionicToast', '$window', 'PrinterServices', 'PosOrderService', '$location', 'NgMap', pos]);
+        .controller('pos', ['$rootScope', "$http", 'configuration', 'CHECKPIN', 'CustomersServices', 'currentUser', '$scope', 'webFrame', 'MenuServices', 'PosServices', 'modalService', 'LocalStorage', 'setting', '$ionicScrollDelegate', '$ionicPopup', '$ionicModal', 'ionicToast', '$window', 'PrinterServices', 'PosOrderService', '$location', 'NgMap', pos]);
 
-    function pos($rootScope, $http, configuration, CustomersServices, currentUser, $scope, webFrame, MenuServices, PosServices, modalService, LocalStorage, setting, $ionicScrollDelegate, $ionicPopup, $ionicModal, ionicToast, $window, PrinterServices, PosOrderService, $location, NgMap) {
+    function pos($rootScope, $http, configuration, CHECKPIN, CustomersServices, currentUser, $scope, webFrame, MenuServices, PosServices, modalService, LocalStorage, setting, $ionicScrollDelegate, $ionicPopup, $ionicModal, ionicToast, $window, PrinterServices, PosOrderService, $location, NgMap) {
 
         /*-------------------------------
          * Initializing POS
@@ -420,6 +420,7 @@
                             alert('wrong PIN');
                             LocalStorage.add('pin', false);
                         }
+
                     } else {
                         LocalStorage.add('pin', false);
                     }
@@ -469,24 +470,61 @@
             });
             confirmPopup.then(function(res) {
                 if (res) {
-                    LocalStorage.add('pin', false);
-                    PosServices.empty();
-                    vm.save_kot = 'KOT';
-                    vm.cart = PosServices.getPos();
-                    vm.items = vm.cart.items;
-                    vm.getTotalItems = PosServices.getTotalItems();
-                    vm.getSubTotal = PosServices.getSubTotal();
-                    vm.tax = PosServices.getTax();
-                    init();
-                    vm.discountRate = 0;
-                    PosServices.setDiscountRate(vm.discountRate);
-                    vm.discount = PosServices.getDiscount();
-                    vm.totalCost = PosServices.totalCost();
-                    PosServices.setOrderType(vm.orderType);
-                    PosServices.set_server(vm.server_id);
-                    $ionicScrollDelegate.$getByHandle('CartItems').scrollBottom();
-                    $scope.hold_order_list = PosServices.hold_order_list();
-                    vm.checkoutModalHide();
+                    if (vm.cart.kot_unique_id != "" && LocalStorage.get('pin') === false) {
+                        $ionicPopup.prompt({
+                            title: 'Enter your secret PIN',
+                            subTitle: '',
+                            inputType: 'password',
+                            inputPlaceholder: 'Your password'
+                        }).then(function(res) {
+                            if (res) {
+                                if (parseInt(res) === currentUser.profile().pin) {
+                                    LocalStorage.add('pin', false);
+                                    PosServices.empty();
+                                    vm.save_kot = 'KOT';
+                                    vm.cart = PosServices.getPos();
+                                    vm.items = vm.cart.items;
+                                    vm.getTotalItems = PosServices.getTotalItems();
+                                    vm.getSubTotal = PosServices.getSubTotal();
+                                    vm.tax = PosServices.getTax();
+                                    init();
+                                    vm.discountRate = 0;
+                                    PosServices.setDiscountRate(vm.discountRate);
+                                    vm.discount = PosServices.getDiscount();
+                                    vm.totalCost = PosServices.totalCost();
+                                    PosServices.setOrderType(vm.orderType);
+                                    PosServices.set_server(vm.server_id);
+                                    $ionicScrollDelegate.$getByHandle('CartItems').scrollBottom();
+                                    $scope.hold_order_list = PosServices.hold_order_list();
+                                    vm.checkoutModalHide();
+                                    LocalStorage.add('pin', true);
+                                } else {
+                                    alert('wrong PIN');
+                                    LocalStorage.add('pin', false);
+                                }
+                            }
+
+                        });
+                    } else {
+                        LocalStorage.add('pin', false);
+                        PosServices.empty();
+                        vm.save_kot = 'KOT';
+                        vm.cart = PosServices.getPos();
+                        vm.items = vm.cart.items;
+                        vm.getTotalItems = PosServices.getTotalItems();
+                        vm.getSubTotal = PosServices.getSubTotal();
+                        vm.tax = PosServices.getTax();
+                        init();
+                        vm.discountRate = 0;
+                        PosServices.setDiscountRate(vm.discountRate);
+                        vm.discount = PosServices.getDiscount();
+                        vm.totalCost = PosServices.totalCost();
+                        PosServices.setOrderType(vm.orderType);
+                        PosServices.set_server(vm.server_id);
+                        $ionicScrollDelegate.$getByHandle('CartItems').scrollBottom();
+                        $scope.hold_order_list = PosServices.hold_order_list();
+                        vm.checkoutModalHide();
+                    }
                 }
             });
         };
