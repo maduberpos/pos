@@ -267,15 +267,8 @@
                         </div>
                     </div>
                 </div>
-<<<<<<< HEAD
-            </div>
-        </div>
-
-        <div id="pos-bill-print" style="display: block;">
-=======
             </div></div>
         <div id="pos-bill-print" style="display: none;">
->>>>>>> 3141301271c169e0f529573682cb8745eb624940
             <p style="text-align: center;">
             <img class="printer-logo"   ng-src="{{vm.venue_detail.pos_receipt_logo}}" />
             </p>
@@ -312,7 +305,7 @@
             <div id="table">
                 <table>
                     <thead>
-                        <tr class="tabletitle" style="border-bottom:1px solid #959595;border-top:1px solid #959595;">
+                        <tr class="tabletitle" style="border-bottom:1px solid #000000;border-top:1px solid #000000;">
                             <td style=" width:70%;" class="text-left">
                                 <h6>Item</h6>
                             </td>
@@ -337,7 +330,7 @@
                                         <p ng-hide="item.discount" style="margin:0; font-size: 10px; float: right; width:20%;"> {{item.prices[0].price | number :0}} x</p>
                                         <div ng-show="item.discount">
                                             {{item.discounted_price | number :0}}
-                                            <p style="text-decoration: line-through; color:#d2d2d2;font-size: 10px; ">
+                                            <p style="text-decoration: line-through; color:#000000;font-size: 10px; ">
                                                 {{item.prices[0].price | number :0}} </p>
                                         </div>
                                     </div>
@@ -345,17 +338,17 @@
                                 <div class="option-list" style="width: 100%; float:left;">
                                     <div ng-repeat="option in item.menu_options">
                                         <div class="">
-                                            <strong style="font-size: 12px;"><p>{{option.option_name}}</p></strong>
+                                            <div style="font-size: 12px;  font-style: italic;"><p>{{option.option_name}}</p></div>
                                         </div>
                                         <div ng-if="option.option_type=='checkbox'">
                                             <div class="row" ng-repeat="(key, value) in option.fulla" ng-if="value">
                                                 <div class="" style=" float: left; width:80%;">
                                                     <p style="margin:0;  font-size: 12px;">
-                                                        {{value.item_name }}
+                                                       -- {{value.item_name }}
                                                     </p>
                                                 </div>
                                                 <div class=" text-right" style="float: right; width:20%;">
-                                                    <p style="margin:0; font-size: 10px; ">
+                                                    <p style="margin:0; font-size: 12px; ">
                                                         <span ng-if="value.item_price!=0">+{{value.item_price | number :0}}</span></p>
                                                 </div>
                                             </div>
@@ -363,7 +356,7 @@
 
                                         <div class="" ng-if="option.option_type=='radio'">
                                             <div class="">
-                                                <p>{{option.selectedByName}}</p>
+                                                <p> -- {{option.selectedByName}}</p>
                                             </div>
                                             <div class=" text-right">
                                                 <span class="option_item_price" ng-if="option.selectedItemPrice!=0">+{{option.selectedItemPrice | number :0}}</span>
@@ -383,7 +376,7 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tfoot style="border-top: 1px solid #959595">
+                    <tfoot style="border-top: 1px solid #000000">
                         <tr class="tabletitle" ng-show="vm.discountRate > 0 || vm.cart.tax > 0">
 
                             <td colspan="2" style="
@@ -489,7 +482,7 @@
                 <br>
                 <p class="text-center"><img class="qr " src="img/qr.png"></p> -->
 
-                <hr>
+                <div style="border-top: 1px solid; width: 100%; display: block;"></div>
                 <p class="text-center">Powered by www.maduber.com</p>
                 <p class="text-center">0300 5292 723</p>
 
@@ -503,7 +496,7 @@
             <span style="width:60%; float:right;">Estimated time: {{ vm.kot_time }} min</span>
             <div id="table">
                 <table>
-                    <tr class="tabletitle" style="border-top: 1px solid #959595;border-bottom: 1px solid #959595; ">
+                    <tr class="tabletitle" style="border-top: 1px solid #000000;border-bottom: 1px solid #000000; ">
                         <td style=" padding: 3px; width:80%;" class="text-left">
                             <h6>Item</h6>
                         </td>

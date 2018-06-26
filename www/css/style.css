@@ -4994,6 +4994,7 @@ button.printorder {
         padding: 0;
         page-break-before: always;
         width: 301.36px;
+        color: #000000;
     }
     @page {
         margin: 0px 10px 0 10px;
@@ -5060,7 +5061,7 @@ button.printorder {
     }
     #printWrapper h1 {
         font-size: 20px;
-        color: #222;
+        color: #000000;
     }
     #printWrapper h2 {
         font-size: 18px;
@@ -5102,7 +5103,7 @@ button.printorder {
         font-size: 12px;
     }
     #printWrapper .service {
-        border-bottom: 1px dashed #aaaaaa;
+        border-bottom: 1px dashed #000000;
     }
     #printWrapper .item {
         width: 24mm;
