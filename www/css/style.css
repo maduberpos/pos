@@ -5080,8 +5080,8 @@ button.printorder {
         line-height: 14px;
     }
     #printWrapper #logo {
-        height: 150px;
-        width: 113px;
+        height: auto;
+        width: 120;
         margin:  10px auto;
     }
     #printWrapper #venue-name {

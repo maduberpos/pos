@@ -428,7 +428,7 @@
 
 
                         <div class="text-center empty_cart empty" ng-show="!vm.orders.length > 0">
-                            <img src="img/empty_cart.png">
+                            <img  src="img/empty_cart.png">
                             <h2> No Online Order Found </h2>
                             <p>Orders will be received through Website, Mobile App. Sorry for inconvenience! </p>
                         </div>
@@ -439,9 +439,10 @@
             </div>
 
             <div id="online-bill-print" style="display: none;">
-
-                <img style="width:150px; height:150px; margin: 0 50px; filter: gray; filter: grayscale(100%);" ng-src="{{vm.venue_detail.pos_receipt_logo}}" />
-
+                <div  id="#printWrapper">
+               <p style="text-align:center;">       
+                <img id="logo"  ng-src="{{vm.venue_detail.pos_receipt_logo}}" />
+              </p>  
 
                 <h2 style="font-size: 14px; margin: 0; text-align: center;">{{vm.venue_detail.name}}</h2>
                 <p style="text-align: center;">
@@ -449,6 +450,11 @@
                     {{ vm.venue_detail.email }}</br>
                     {{ vm.venue_detail.phone_no }}</br>
                 </p>
+                <div ng-show="vm.bill_print.printer_header" style="border-top: 1px dashed #aaaaaa; width: 100%; display: block; margin: 10px 0;"></div>
+                    <div  ng-show="vm.bill_print.printer_header" class="text-center" ng-bind-html="vm.bill_print.printer_header">
+                       
+                    </div>
+                    <div ng-show="vm.bill_print.printer_header" style="border-top: 1px dashed #aaaaaa; width: 100%; display: block; margin: 10px 0;"></div>   
                 <!--End Invoice Mid-->
 
 
@@ -479,7 +485,7 @@
                 <div id="table">
                     <table>
                         <thead>
-                            <tr class="tabletitle" style="border-bottom:1px solid #959595;border-top:1px solid #959595;">
+                            <tr class="tabletitle" style="border-bottom:1px solid #000000;border-top:1px solid #000000;">
                                 <td style=" width:70%;" class="text-left">
                                     <h6>Item</h6>
                                 </td>
@@ -492,8 +498,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="service" ng-repeat="item in vm.order.items" style="border: none;">
-                                <td class="tableitem" style=" padding: 3px;">
+                            <tr class="service" ng-repeat="item in vm.order.items" style="border-bottom: 1px dashed #aaaaaa;  ">
+                                <td class="tableitem" style=" padding: 10px 5px;">
                                     <div class="" style="width: 100%; float:left;">
                                         <div class="text-left">
                                             <p style="margin:0;  font-size: 12px; float: left; width:80%;">{{ item.menu_item_name}} ({{item.price_title}})<br>
@@ -518,33 +524,33 @@
                                                 <table>
                                                     <tr>
                                                         <td>
-                                                            <p ng-repeat="(key, value) in option.selectedByName" style="margin:0; font-size: 12px;float: left; width:60%;"> {{key }}</p>
+                                                            <p ng-repeat="(key, value) in option.selectedByName" style=" width: 100%; display: block; text-align: left; "> {{key }}</p>
 
                                                         </td>
                                                         <td>
 
-                                                            <p ng-repeat="(key, value) in option.selectedItemPrice" style="float: right; width:60%;">+{{value | number :0}}</p>
+                                                            <p ng-repeat="(key, value) in option.selectedItemPrice" style=" width: 100%; display: block; text-align: right; ">+{{value | number :0}}</p>
                                                         </td>
                                                     </tr>
                                                 </table>
                                             </div>
 
 
-                                            <div class="" ng-if="option.option_type=='radio'">
-                                                <div class="">
+                                            <div class="row" ng-if="option.option_type=='radio'">
+                                                <div class="col col-67">
                                                     <p> {{option.selectedByName}}</p>
                                                 </div>
-                                                <div class=" text-right">
+                                                <div class="col col-33 text-right">
                                                     <span class="option_item_price">+{{option.selectedItemPrice | number :0}}</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
-                                <td style=" vertical-align: top;  padding: 3px; margin-top: -20px;" class="tableitem text-right">{{item.quantity}}</td>
-                                <td style=" vertical-align: top;  padding: 3px;" class="tableitem text-right">
+                                <td style=" vertical-align: top;   padding: 10px 5px; margin-top: -20px;" class="tableitem text-right">{{item.quantity}}</td>
+                                <td style=" vertical-align: top;   padding: 10px 5px;" class="tableitem text-right">
 
-                                    <span>{{ item.discounted_price * item.quantity | number : 2}}</span>
+                                    <span>{{ item.discounted_price * item.quantity | number : 0}}</span>
                                     <!-- <span>
                                                          {{( item.discounted_price + vm.option_price_count($index)) * item.quantity | number :0 }}
                                                      </span> -->
@@ -552,7 +558,7 @@
                                 </td>
                             </tr>
                         </tbody>
-                        <tfoot style="border-top: 1px solid #959595">
+                        <tfoot style="border-top: 1px solid #000000">
                             <tr class="tabletitle">
 
                                 <td colspan="2" style="
@@ -570,7 +576,7 @@
                                     <h2 style="font-size: 12px;" class="text-right">TAX ( {{vm.order.tax_rate}} %)</h2>
                                 </td>
                                 <td style=" padding: 3px;" class="payment">
-                                    <h2 style="font-size: 12px;" class="text-right">{{vm.order.tax | number :0 }}</h2>
+                                    <h2 style="font-size: 12px;" class="text-right">+{{vm.order.tax | number :0 }}</h2>
                                 </td>
                             </tr>
                             <tr class="tabletitle" ng-show="vm.order.discount > 0">
@@ -579,7 +585,7 @@
                                     <h2 style="font-size: 12px;" class="text-right">Discount ({{vm.order.discountRate}}%)</h2>
                                 </td>
                                 <td style=" padding: 3px;" class="payment">
-                                    <h2 style="font-size: 12px;" class="text-right">{{vm.order.discount| number :0 }}</h2>
+                                    <h2 style="font-size: 12px;" class="text-right">- {{vm.order.discount| number :0 }}</h2>
                                 </td>
                             </tr>
 
@@ -589,7 +595,7 @@
                                     <h2 style="font-size: 12px;" class="text-right">Delivery Charger</h2>
                                 </td>
                                 <td style=" padding: 3px;" class="payment">
-                                    <h2 style="font-size: 12px;" class="text-right">{{vm.order.shipping_charges| number :0 }}</h2>
+                                    <h2 style="font-size: 12px;" class="text-right">+ {{vm.order.shipping_charges| number :0 }}</h2>
                                 </td>
                             </tr>
 
@@ -615,14 +621,13 @@
 
                         </tfoot>
                     </table>
-                    <hr ng-show="vm.order.shipping_type==='delivery'">
+                    <div ng-show="vm.order.shipping_type==='delivery'" style="border-top: 1px solid; width: 100%; display: block; margin: 10px 0;"></div>
 
                     <table ng-show="vm.order.shipping_type==='delivery'">
                         <thead>
                             <h3 ng-show="vm.order.shipping_type==='delivery'" style="text-align: center;margin: 0;">Customer</h3>
                             <tr>
                                 <td style=" padding: 3px; width:50%;">Name : {{ vm.order.first_name }} {{ vm.order.last_name }} </td>
-
 
                             </tr>
                             <!-- <tr>
@@ -645,12 +650,9 @@
 
 
                     <!--End Table-->
-
-                    <div>
-                        <p class="text-center">
-                            {{vm.bill_print_footer}}
-                        </p>
-                    </div>
+                    <div ng-show="vm.bill_print.printer_footer" style="border-top: 1px dashed #aaaaaa; width: 100%; display: block; margin: 10px 0;"></div>
+                    <div  ng-show="vm.bill_print.printer_footer" class="text-center" ng-bind-html="vm.bill_print.printer_footer"></div>
+                    
 
                     <!-- <hr>
 
@@ -658,15 +660,18 @@
                     <br>
                     <p class="text-center"><img class="qr " src="img/qr.png"></p> -->
 
-                    <hr>
+                    <div style="border-top: 1px solid; width: 100%; display: block; margin: 20px 0;"></div>
                     <p class="text-center">Powered by www.maduber.com</p>
                     <p class="text-center">0300 5292 723</p>
 
                 </div>
                 <!--End InvoiceBot-->
             </div>
+          </div>
             <div id="kot-bill-print-online-order" style="display: none;">
-
+                    <div ng-show="vm.kot_print.printer_header" style="border-top: 1px dashed #aaaaaa; width: 100%; display: block; margin: 10px 0;"></div>
+                    <div  ng-show="vm.kot_print.printer_header" class="text-center" ng-bind-html="vm.kot_print.printer_header"></div>
+                    <div ng-show="vm.kot_print.printer_header" style="border-top: 1px dashed #aaaaaa; width: 100%; display: block; margin: 20px 0;"></div>
                 <!--End Invoice Mid-->
                 <h2 style="width:60%; margin: 0 70px ; ">Order# {{vm.order.order_id}}</h2>
                 <span style="width:40%; float:left;">{{vm.order.created_at | moment: 'format': 'h:mm a'}}</span>
@@ -730,11 +735,9 @@
 
                     <!--End Table-->
 
-                    <div id="legalcopy">
-                        <p class="legal">
-                            {{vm.kot_print_footer}}
-                        </p>
-                    </div>
+                    <div ng-show="vm.kot_print.printer_header" style="border-top: 1px dashed #aaaaaa; width: 100%; display: block; margin: 30px 0;"></div>
+                    <div  ng-show="vm.kot_print.printer_header" class="text-center" ng-bind-html="vm.kot_print.printer_header"></div>
+                    <div ng-show="vm.kot_print.printer_header" style="border-top: 1px dashed #aaaaaa; width: 100%; display: block; margin: 30px 0;"></div>
                 </div>
                 <!--End InvoiceBot-->
             </div>
