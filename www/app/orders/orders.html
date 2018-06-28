@@ -185,9 +185,10 @@
                                                     <li class="item method" style="position:relative;">
 
                                                         <label class="item item-input">
-                                                    <input class="online-order-discount" type="number" ng-model="vm.discountRate" placeholder="Add Discount %" ng-readonly="vm.order.order_status === 5 || vm.order.order_status === 1 || vm.order.order_status === 0 ">
+                                                    <input class="online-order-discount" type="number" ng-model="vm.discountRate" placeholder="Add Discount %" ng-readonly="vm.order.order_status === 5 || vm.order.order_status === 1 || vm.order.order_status === 0 || vm.order.discount > 0">
                                             </label>
-                                                        <button style="position:absolute; top:5px;z-index:999;right:20px;" class="button button-small button-balanced" ng-disabled="vm.order.order_status === 5 || vm.order.order_status === 1 || vm.order.order_status === 0  || vm.discountRate ===null " ng-click="vm.applyDiscount()">Apply Discount</button>
+                                                        <button style="position:absolute; top:5px;z-index:999;right:20px;" class="button button-small button-balanced" ng-disabled="vm.order.order_status === 5 || vm.order.order_status === 1 || vm.order.order_status === 0  || vm.discountRate ===null || vm.order.discount > 0"
+                                                            ng-click="vm.applyDiscount()">Apply Discount</button>
 
                                                     </li>
                                                 </ul>

@@ -30,7 +30,7 @@
                 discount: 0,
                 discountRate: 0,
                 sub_total: 0,
-                sub_total_after_dis:0,
+                sub_total_after_dis: 0,
                 total: 0,
                 address_id: 0,
                 taxRate: 0,
@@ -76,7 +76,7 @@
                                     item.item_sum = parseFloat(option_sum_by_option(item.menu_options)) + parseFloat(item.prices[0].price);
                                     item.discounted_price = parseFloat(option_sum_by_option(item.menu_options)) + (parseFloat(item.prices[0].price) - parseFloat(item_discount));
                                     itm.quantity = (itm.quantity + item.quantity);
-                                    
+
                                     setPos(pos);
                                     exit = true;
                                 } else { // if options are not same of existing and new item then push new item into cart
@@ -365,7 +365,7 @@
         }
 
         function getTax() {
-            var tax = +parseFloat(((getSubTotalAfterDiscount () / 100) * getPos().taxRate)).toFixed(2);
+            var tax = +parseFloat(((getSubTotalAfterDiscount() / 100) * getPos().taxRate)).toFixed(2);
             _self.pos.tax = tax;
             save();
             return tax;
@@ -410,9 +410,10 @@
             save();
             return +parseFloat(total).toFixed(2);
         }
-        function getSubTotalAfterDiscount (){
-            var sub_total_after_dis =0 ;
-            sub_total_after_dis =  getSubTotal() - getDiscount();
+
+        function getSubTotalAfterDiscount() {
+            var sub_total_after_dis = 0;
+            sub_total_after_dis = getSubTotal() - getDiscount();
             _self.pos.sub_total_after_dis = +parseFloat(sub_total_after_dis).toFixed(2);
             save();
             return +parseFloat(sub_total_after_dis).toFixed(2);
@@ -478,7 +479,7 @@
                     "discount": 0,
                     "total": 0,
                     "sub_total": 0,
-                    "sub_total_after_dis":0,
+                    "sub_total_after_dis": 0,
                     "discountRate": 0,
                     "shippingType": 'dine-in',
                     "address_id": 0,
@@ -514,7 +515,7 @@
                 discount: 0,
                 discountRate: 0,
                 sub_total: 0,
-                sub_total_after_dis:0,
+                sub_total_after_dis: 0,
                 total: 0,
                 address_id: 0,
                 taxRate: 0,
@@ -589,22 +590,39 @@
 
         function save_kot_online_order(order) {
             var kot_list = [];
+            if (is_order_in_kot(order)) {
+                if (LocalStorage.get('kot_list')) {
+                    kot_list = LocalStorage.get('kot_list');
+                }
+
+                if (order.items.length > 0) {
+                    var mypos = order;
+                    mypos.type = 0;
+                    //mypos.selected_customer = LocalStorage.get('selected_customer');
+
+
+                    mypos.kot_datetime = moment().format('D-MM-YYYY h:mm:ss a');
+
+                    mypos.kot_unique_id = order.order_id;
+                    kot_list.push(mypos);
+                    Socket.emit("order", mypos);
+                    LocalStorage.add('kot_list', kot_list);
+                }
+            }
+        }
+
+        function is_order_in_kot(order) {
+            var kot_list;
+            var rtrn = true;
             if (LocalStorage.get('kot_list')) {
                 kot_list = LocalStorage.get('kot_list');
-            }
+                angular.forEach(kot_list, function(item) {
+                    if (item.kot_unique_id === order.order_id) {
 
-            if (order.items.length > 0) {
-                var mypos = order;
-                mypos.type = 0;
-                //mypos.selected_customer = LocalStorage.get('selected_customer');
-
-
-                mypos.kot_datetime = moment().format('D-MM-YYYY h:mm:ss a');
-
-                mypos.kot_unique_id = order.order_id;
-                kot_list.push(mypos);
-                Socket.emit("order", mypos);
-                LocalStorage.add('kot_list', kot_list);
+                        rtrn = false;
+                    }
+                });
+                return rtrn;
 
             }
         }

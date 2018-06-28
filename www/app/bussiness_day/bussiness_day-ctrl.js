@@ -3,12 +3,21 @@
     angular.module('app')
         .controller("bussinessdayCtrl", bussinessdayCtrl);
 
-    bussinessdayCtrl.$inject = ["$scope", 'bussinessdayService', 'currentUser', 'setting', 'loading', '$location', 'LocalStorage', 'PrinterServices', '$timeout', '$ionicPopup'];
+    bussinessdayCtrl.$inject = ["$scope", 'bussinessdayService', 'currentUser', 'setting', 'loading', '$location', 'LocalStorage', 'PrinterServices', '$timeout', '$interval', '$ionicPopup'];
 
-    function bussinessdayCtrl($scope, bussinessdayService, currentUser, setting, loading, $location, LocalStorage, PrinterServices, $timeout, $ionicPopup) {
+    function bussinessdayCtrl($scope, bussinessdayService, currentUser, setting, loading, $location, LocalStorage, PrinterServices, $timeout, $interval, $ionicPopup) {
         var vm = this;
         vm.venue_detail = setting.venue_setting();
         vm.history = [];
+        vm.week_days = [
+            'sunday',
+            'monday',
+            'tuesday',
+            'wednesday',
+            'thursday',
+            'friday',
+            'saturday'
+        ]
         vm.isDayStarted = false;
         vm.dayStartedDateTime = '';
         vm.dayStart = {
@@ -29,11 +38,14 @@
                 vm.dayStartedDateTime = LocalStorage.get('DAYSTART').day_start;
 
             }
+            var d = new Date();
+            console.log(vm.week_days[d.getDay()])
+                // console.log(JSON.parse(vm.venue_detail.timing))
             var data = {
-                user_id: vm.user.user_id,
-                venue_id: vm.user.venue_id
-            }
-            loading.show();
+                    user_id: vm.user.user_id,
+                    venue_id: vm.user.venue_id
+                }
+                // loading.show();
             bussinessdayService.history_business_day(data, vm.page).then(function(res) {
                 vm.history = res.data.data;
                 var today = moment().format("MM/DD/YYYY");
@@ -56,14 +68,18 @@
                 } else {
                     vm.hide_day = false;
                 }
-                loading.hide();
+                // loading.hide();
 
                 // today = moment(vm.history[0].day_close).format("MM/DD/YYYY");
-                console.log();
+
 
             });
         }
         activate();
+
+        // $interval(function() {
+        //     activate();
+        // }, 1000);
 
         vm.dayStart = function() {
             vm.dayStart.business_day_type = 'daystart';

@@ -46,8 +46,19 @@ function createWindow() {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
-        mainWindow = null
+        // if (localStorage.key("POS_USER")) {
+        //     console.log(localStorage.getItem("POS_USER"));
+        //     alert('1');
+        // }
+        mainWindow = null;
     })
+    mainWindow.onbeforeunload = (e) => {
+        var answer = confirm('Do you really want to close the application?');
+        e.returnValue = answer; // this will *prevent* the closing no matter what value is passed
+        if (answer) { win.destroy(); } // this will close the app
+    };
+    // 
+
 }
 
 // This method will be called when Electron has finished
@@ -56,18 +67,18 @@ function createWindow() {
 app.on('ready', createWindow)
 
 // Quit when all windows are closed.
-app.on('window-all-closed', function() {
-    // On OS X it is common for applications and their menu bar
-    // to stay active until the user quits explicitly with Cmd + Q
+// app.on('window-all-closed', function() {
+//     // On OS X it is common for applications and their menu bar
+//     // to stay active until the user quits explicitly with Cmd + Q
 
-    if (localStorage.key("POS_USER")) {
-        console.log(localStorage.getItem("POS_USER"));
-        alert('1');
-    }
-    if (process.platform !== 'darwin') {
-        app.quit()
-    }
-})
+
+//     if (process.platform !== 'darwin') {
+//         app.quit()
+//     }
+// })
+
+// Prevent Closing when work is running
+
 
 app.on('activate', function() {
     // On OS X it's common to re-create a window in the app when the
