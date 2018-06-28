@@ -4994,6 +4994,8 @@ button.printorder {
         padding: 0;
         page-break-before: always;
         width: 301.36px;
+        color: #000000;
+        font-family: sans-serif;
     }
     @page {
         margin: 0px 18px 0 18px;
@@ -5035,6 +5037,7 @@ button.printorder {
     p {
         color: black !important;
         margin: 0;
+        font-family: sans-serif;
     }
     span {
         color: black !important;
@@ -5045,12 +5048,14 @@ button.printorder {
         z-index: 10000;
         background: #fff;
         margin: 0 auto;
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: sans-serif;
+        font-size: 14px;
         width: 100% !important;
         
     }
     #printWrapper table {
         width: 100% !important;
+       
     }
     .qr {
         position: relative;
@@ -5060,7 +5065,7 @@ button.printorder {
     }
     #printWrapper h1 {
         font-size: 20px;
-        color: #222;
+        color: #000000;
     }
     #printWrapper h2 {
         font-size: 18px;
@@ -5075,8 +5080,8 @@ button.printorder {
         line-height: 14px;
     }
     #printWrapper #logo {
-        height: 150px;
-        width: 113px;
+        height: auto;
+        width: 120;
         margin:  10px auto;
     }
     #printWrapper #venue-name {
@@ -5102,7 +5107,7 @@ button.printorder {
         font-size: 12px;
     }
     #printWrapper .service {
-        border-bottom: 1px dashed #aaaaaa;
+        border-bottom: 1px dashed #000000;
     }
     #printWrapper .item {
         width: 24mm;
