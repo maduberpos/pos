@@ -1,14 +1,49 @@
 {
-  "name": "pos",
-  "app_id": "",
-  "type": "ionic1",
-  "integrations": {
-    "gulp": {}
-  },
-  "watchPatterns": [
-    "scss/**/*",
-    "www/**/*",
-    "!www/lib/**/*",
-    "!www/**/*.map"
-  ]
+
+    "name": "pos",
+    "app_id": "",
+    "type": "ionic1",
+    "integrations": {
+        "gulp": {}
+    },
+    "build": {
+        "nsis": {
+            "oneClick": false,
+            "perMachine": true,
+            "allowElevation": true,
+            "allowToChangeInstallationDirectory": true,
+            "deleteAppDataOnUninstall": true,
+            "createDesktopShortcut": true,
+            "installerIcon": "build/icon.ico",
+            "uninstallerIcon": "build/icon.ico",
+            "uninstallDisplayName": "Uninstall LIMS",
+            "license": "EULA"
+        },
+        "win": {
+            "target": "nsis",
+            "icon": "build/icon.ico",
+            "publisherName": "April Mintac Pineda"
+        },
+        "appId": "com.maduber.pos",
+        "productName": "MaduberPOS",
+        "buildVersion": "1.0.86.7",
+        "copyright": "Maduber 2018",
+        "files": [
+            "app/**/*",
+            "models/**/*"
+        ],
+        "extraFiles": [
+            "database/main.sqlite"
+        ]
+    },
+    "watchPatterns": [
+        "scss/**/*",
+        "www/**/*",
+        "!www/lib/**/*",
+        "!www/**/*.map"
+    ]
+
+
+
+
 }

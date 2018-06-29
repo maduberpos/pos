@@ -351,7 +351,7 @@
             vm.ip = LocalStorage.get('ip_address');
 
             vm.ip = String(vm.ip);
-            var myIoSocket = io.connect('http://192.168.10.7:3000');
+            var myIoSocket = io.connect('http://192.168.100.14:3000');
             //https://mjachatapp-danial326.c9users.io (cloud9 server link)
             var mySocket = socketFactory({
                 ioSocket: myIoSocket

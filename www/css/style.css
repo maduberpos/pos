@@ -378,7 +378,7 @@ video {
 }
 
 #logo img {
-   width: 36%;
+    width: 36%;
     margin-bottom: 10px;
 }
 
@@ -398,8 +398,6 @@ video {
 }
 
 #login-page .item-input {
-
-
     border: 1px solid #ccc;
     border-radius: 0.25rem;
     margin-bottom: 12px;
@@ -433,8 +431,6 @@ video {
     text-align: center;
     border-right: 1px solid rgb(97, 96, 96);
 }
-
-
 
 #login-page .input:focus,
 #login-page .input:hover,
@@ -3440,7 +3436,6 @@ button {
 }
 
 .list-customer {
-   
     left: 0;
     display: block;
     min-height: 438px;
@@ -3450,16 +3445,17 @@ button {
     z-index: 999;
 }
 
-
 .list-customer .item {
     background: #f7f7f7 none repeat scroll 0 0;
     border-bottom: 1px solid #a4a3a3;
     padding: 8px 20px;
 }
-#pos-customers .item .icon{
-  top: 10px;
-  right: 20px;
+
+#pos-customers .item .icon {
+    top: 10px;
+    right: 20px;
 }
+
 .customer-orders-scroll {
     height: 550px;
 }
@@ -3603,11 +3599,13 @@ button {
     float: left;
     min-height: 150px;
 }
-.kot-item-list{
+
+.kot-item-list {
     min-height: 100px;
     height: 100px;
     overflow: scroll;
 }
+
 .pos-table .ribbon {
     position: absolute;
     left: -10px !important;
@@ -3804,9 +3802,10 @@ button {
     top: 5%;
     width: 32%;
 }
-.printer-logo{
-    width:100px;
-    height:100px;
+
+.printer-logo {
+    width: 100px;
+    height: 100px;
 }
 
 #kot-modal .text-center>strong {
@@ -4604,7 +4603,8 @@ thead {
     text-transform: capitalize;
     width: 100%;
 }
-.pos-table .button.view-all-item .icon{
+
+.pos-table .button.view-all-item .icon {
     position: absolute;
     top: -5px;
     left: 86px;
@@ -4999,7 +4999,6 @@ button.printorder {
     }
     @page {
         margin: 0px 18px 0 18px;
-    
     }
     /* Reset overflow */
     html,
@@ -5012,6 +5011,18 @@ button.printorder {
     /* Hide side menu and navbar */
     .menu,
     .nav-bar-container {
+        display: none;
+    }
+    .popup {
+        display: none;
+    }
+    .popup-buttons {
+        display: none;
+    }
+    .popup-head {
+        display: none;
+    }
+    .popup-body {
         display: none;
     }
     /* Remove borders from item and allow to print background */
@@ -5051,11 +5062,9 @@ button.printorder {
         font-family: sans-serif;
         font-size: 14px;
         width: 100% !important;
-        
     }
     #printWrapper table {
         width: 100% !important;
-       
     }
     .qr {
         position: relative;
@@ -5082,7 +5091,7 @@ button.printorder {
     #printWrapper #logo {
         height: auto;
         width: 120;
-        margin:  10px auto;
+        margin: 10px auto;
     }
     #printWrapper #venue-name {
         font-size: 20px;
