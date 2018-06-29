@@ -5,19 +5,20 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "mac":"electron-builder -m",
-    "win":  "electron-builder -w"
+    "mac": "electron-builder -m",
+    "win": "electron-builder -w"
   },
-  "build":{
-    "appId":"pk.maduber.epos",
+  "build": {
+    "appId": "pk.maduber.epos",
     "directories": {
       "buildResources": "."
     },
-    "win":{
-      "publish":["github"],
-      "publisherName":"MaduberLtd"
+    "win": {
+      "publish": [
+        "github"
+      ],
+      "publisherName": "MaduberLtd"
     }
-
   },
   "repository": "https://github.com/maduberpk/pos",
   "keywords": [],
@@ -31,6 +32,7 @@
   "dependencies": {
     "electron-reload": "^1.2.2",
     "express": "^4.16.3",
+    "node-localstorage": "^1.3.1",
     "node-notifier": "^5.2.1",
     "shelljs": "^0.8.2",
     "socket.io": "^2.1.1"
