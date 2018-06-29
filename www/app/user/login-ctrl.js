@@ -1,9 +1,9 @@
 (function() {
     'use strict';
 
-    angular.module('app').controller('LoginCtrl', ['$scope', 'Socket', '$location', 'UserServices', 'MenuServices', 'currentUser', 'PosServices', 'LocalStorage', 'loading', 'checkin_checkoutService', '$window', LoginCtrl]);
+    angular.module('app').controller('LoginCtrl', ['$scope', 'Socket', '$location', 'UserServices', 'MenuServices', 'currentUser', 'PosServices', 'LocalStorage', 'loading', 'checkin_checkoutService', 'bussinessdayService', 'cashin_outService', '$window', LoginCtrl]);
 
-    function LoginCtrl($scope, Socket, $location, UserServices, MenuServices, currentUser, PosServices, LocalStorage, loading, checkin_checkoutService, $window) {
+    function LoginCtrl($scope, Socket, $location, UserServices, MenuServices, currentUser, PosServices, LocalStorage, loading, checkin_checkoutService, bussinessdayService, cashin_outService, $window) {
         var vm = this;
         vm.user = {
             email: '',
@@ -44,19 +44,78 @@
                         LocalStorage.add('pin', false);
                         if (MenuServices.update_menu()) {
                             loading.hide();
-                            $location.path('app/pos');
+                            // $location.path('app/pos');
                         } else {
                             loading.hide();
-                            $location.path('app/pos');
-                            $window.location.reload();
+                            // $window.location.reload();
                         }
                     })
                     .catch(function(response) {
                         console.log(response);
                         loading.hide();
                     });
+                var data = {
+                    user_id: response.data.data.user_id,
+                    venue_id: response.data.data.venue_id
+                }
                 vm.checkindata.user_id = response.data.data.user_id;
                 vm.checkindata.venue_id = response.data.data.venue_id;
+                bussinessdayService.history_business_day(data, 0).then(function(res) {
+                    vm.history = res.data.data;
+                    var today = moment().format("MM/DD/YYYY");
+                    var start_day = moment(vm.history[0].day_start).format("MM/DD/YYYY");
+                    var start_close = moment(vm.history[0].day_close).format("MM/DD/YYYY");
+
+                    if (vm.history[0].day_close === '') {
+                        LocalStorage.add('ISDAYSTARTED', true);
+                        LocalStorage.add("DAYSTART", vm.history[0]);
+                        LocalStorage.add("DAYSTART_ID", vm.history[0].id);
+                        vm.isDayStarted = LocalStorage.get('ISDAYSTARTED');
+                        vm.dayStartedDateTime = LocalStorage.get('DAYSTART').day_start;
+                        vm.hide_day = false;
+                    } else if (today === start_close && start_close === start_day) {
+                        LocalStorage.add("DAYSTART", vm.history[0]);
+                        vm.dayStartedDateTime = vm.history[0].day_start;
+                        LocalStorage.add("DAYCLOSE", vm.history[0]);
+                        vm.dayCloseDateTime = vm.history[0].day_close;
+                        vm.hide_day = true;
+                    } else {
+                        vm.hide_day = false;
+                    }
+                    // loading.hide();
+                    $location.path('app/pos');
+                    // today = moment(vm.history[0].day_close).format("MM/DD/YYYY");
+
+
+                });
+                cashin_outService.history_cashin_cashout(data.venue_id, data.user_id, 0).then(function(res) {
+                        vm.cashin_out_history = res.data.data;
+                        if (vm.cashin_out_history.length > 0) {
+                            angular.forEach(vm.cashin_out_history, function(cashin) {
+
+                                if (cashin.cashout === "") {
+                                    console.log(cashin);
+                                    console.log(cashin);
+                                    LocalStorage.add('isCashIn', true);
+                                    LocalStorage.add('cashin_id', cashin.id);
+                                    vm.cashin_amount = parseInt(cashin.cashin_amount);
+                                    vm.cashin_date = cashin.cashin;
+                                    vm.cashin_reason = cashin.cashin_reason;
+                                    vm.cashout_data.cashin_id = LocalStorage.get('cashin_id');
+                                    vm.cashin = false;
+                                    vm.cashout = true;
+                                }
+                            })
+                        } else {
+                            LocalStorage.add('isCashIn', false);
+                            LocalStorage.add('cashin_id', 0);
+                        }
+                        loading.hide()
+                    })
+                    .catch(function(response) {
+                        console.log(response);
+                        loading.hide();
+                    });
                 checkin_checkoutService.post_checkin_checkout(vm.checkindata).then(function(res) {
                     LocalStorage.add("CHECKIN", true);
                     vm.checkin = false;

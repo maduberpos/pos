@@ -18,6 +18,7 @@
             printer_header: '',
             printer_footer: ''
         }
+        vm.server_connection = false;
         vm.order_notification = true;
         vm.reservation_notification = true;
         vm.customer_notification = true;
