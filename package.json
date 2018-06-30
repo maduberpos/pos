@@ -1,6 +1,6 @@
 {
   "name": "MaduberEPOS",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Maduber EPOS",
   "main": "main.js",
   "scripts": {
@@ -27,7 +27,7 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^2.0.0",
-    "electron-builder": "^20.15.1"
+    "electron-builder": "^20.19.0"
   },
   "dependencies": {
     "electron-reload": "^1.2.2",

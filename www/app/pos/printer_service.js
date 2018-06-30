@@ -21,16 +21,16 @@
                 if (LocalStorage.get('billing_printer_detail')) {
                     for (var i = 1; i <= number_of_prints; i++) {
                         currentWebContents.print({
-                            silent: false,
+                            silent: true,
                             deviceName: printer_name,
-                            printBackground: false,
+                            printBackground: true,
                         });
                     }
                 } else {
                     currentWebContents.print({
-                        silent: false,
+                        silent: true,
                         deviceName: printer_name,
-                        printBackground: false,
+                        printBackground: true,
                     });
                 }
                 $timeout(function() {
