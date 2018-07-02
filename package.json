@@ -8,33 +8,44 @@
     "mac": "electron-builder -m",
     "win": "electron-builder -w"
   },
-  "build": {
-    "appId": "pk.maduber.epos",
-    "directories": {
-      "buildResources": "."
+    "build": {
+        "appId": "pk.maduber.epos",
+        "directories": {
+            "buildResources": "."
+        },
+        "win": {
+            "publish": ["github"],
+            "icon": "build/icon.ico",
+            "publisherName": "MaduberLtd",
+            "files": [
+                "static/**/*"
+            ],
+            "dmg": {
+                "icon": "build/dmgIcon.icns"
+            }
+        },
+        "nsis": {
+            "installerIcon": "build/icon.ico",
+            "createDesktopShortcut": "always",
+            "menuCategory": "…"
+        }
+
     },
-    "win": {
-      "publish": [
-        "github"
-      ],
-      "publisherName": "MaduberLtd"
+    "repository": "https://github.com/maduberpk/pos",
+    "keywords": [],
+    "author": "MaduberLtd",
+    "homepage": "https://www.maduber.pk",
+    "license": "CC0-1.0",
+    "devDependencies": {
+        "electron": "^2.0.0",
+        "electron-builder": "^20.15.1"
+    },
+    "dependencies": {
+        "electron-reload": "^1.2.2",
+        "express": "^4.16.3",
+        "node-localstorage": "^1.3.1",
+        "node-notifier": "^5.2.1",
+        "shelljs": "^0.8.2",
+        "socket.io": "^2.1.1"
     }
-  },
-  "repository": "https://github.com/maduberpk/pos",
-  "keywords": [],
-  "author": "MaduberLtd",
-  "homepage": "https://www.maduber.pk",
-  "license": "CC0-1.0",
-  "devDependencies": {
-    "electron": "^2.0.0",
-    "electron-builder": "^20.19.0"
-  },
-  "dependencies": {
-    "electron-reload": "^1.2.2",
-    "express": "^4.16.3",
-    "node-localstorage": "^1.3.1",
-    "node-notifier": "^5.2.1",
-    "shelljs": "^0.8.2",
-    "socket.io": "^2.1.1"
-  }
 }
