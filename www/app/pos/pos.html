@@ -267,10 +267,11 @@
                         </div>
                     </div>
                 </div>
-            </div></div>
+            </div>
+        </div>
         <div id="pos-bill-print" style="display: none;">
             <p style="text-align: center;">
-            <img class="printer-logo"   ng-src="{{vm.venue_detail.pos_receipt_logo}}" />
+                <img class="printer-logo" ng-src="{{vm.venue_detail.pos_receipt_logo}}" />
             </p>
 
             <h2 style="font-size: 14px; margin: 0; text-align: center;">{{vm.venue_detail.name}}</h2>
@@ -286,6 +287,7 @@
             <table>
                 <thead>
                     <h2 style="text-align: center;margin: 0;">Order # {{vm.cart.kot_unique_id}}</h2>
+                    <h6 style="text-align: center;margin: 0;">Platform : {{ vm.cart.platform }}</h6>
                     <tr>
                         <td class="text-left" ng-show="vm.cart.order_type != ''" style=" padding: 3px; width:50%;">Order Type : {{vm.cart.order_type}}</td>
                         <td class="text-right" ng-show="vm.server_name != ''" style=" padding: 3px; width:50%;">Server : {{vm.server_name}}</td>
@@ -298,9 +300,10 @@
                         <td class="text-left" style=" padding: 3px; width:50%;">Payment by : {{ payment_method }}</td>
                         <td class="text-right" ng-show="vm.cart.table_id != '0'" style=" padding: 3px; width:50%;">Table no # {{vm.cart.table_id}} </td>
                     </tr>
+
                 </thead>
             </table>
-            <!--   ng-if="vm.cart.order_type === 'delivery'" -->
+
 
             <div id="table">
                 <table>
@@ -338,13 +341,15 @@
                                 <div class="option-list" style="width: 100%; float:left;">
                                     <div ng-repeat="option in item.menu_options">
                                         <div class="">
-                                            <div style="font-size: 12px;  font-style: italic;"><p>{{option.option_name}}</p></div>
+                                            <div style="font-size: 12px;  font-style: italic;">
+                                                <p>{{option.option_name}}</p>
+                                            </div>
                                         </div>
                                         <div ng-if="option.option_type=='checkbox'">
                                             <div class="row" ng-repeat="(key, value) in option.fulla" ng-if="value">
                                                 <div class="" style=" float: left; width:80%;">
                                                     <p style="margin:0;  font-size: 12px;">
-                                                       -- {{value.item_name }}
+                                                        -- {{value.item_name }}
                                                     </p>
                                                 </div>
                                                 <div class=" text-right" style="float: right; width:20%;">
@@ -428,7 +433,28 @@
                                 <h2 style="font-size: 12px;" class="text-right"> {{vm.totalCost | number :0}}</h2>
                             </td>
                         </tr>
+                        <tr class="tabletitle">
 
+                            <td colspan="2" style="
+                         padding: 3px;" class="Rate">
+                                <h2 style="font-size: 12px;" class="text-right">Exact Amount </h2>
+                            </td>
+                            <td style="
+                         padding: 3px;" class="payment">
+                                <h2 style="font-size: 12px;" class="text-right"> {{vm.exact_amount | number :0}}</h2>
+                            </td>t
+                        </tr>
+                        <tr class="tabletitle">
+
+                            <td colspan="2" style="
+                         padding: 3px;" class="Rate">
+                                <h2 style="font-size: 12px;" class="text-right">Return</h2>
+                            </td>
+                            <td style="
+                         padding: 3px;" class="payment">
+                                <h2 style="font-size: 12px;" class="text-right"> {{vm.return_amount | number :0}}</h2>
+                            </td>t
+                        </tr>
                         <tr>
                             <td>
                                 <p ng-hide="vm.additional_instruction===''">Note: {{vm.additional_instruction}}</p>
@@ -485,7 +511,8 @@
                 <p class="text-center">0300 5292 723</p>
 
             </div>
-            <!--End InvoiceBot--></div>
+            <!--End InvoiceBot-->
+        </div>
         <div id="kot-bill-print" style="display: none;">
 
             <!--End Invoice Mid-->
@@ -554,6 +581,7 @@
                     </p>
                 </div>
             </div>
-            <!--End InvoiceBot--></div>
+            <!--End InvoiceBot-->
+        </div>
     </ion-content>
 </ion-view>
