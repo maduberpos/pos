@@ -1,4 +1,4 @@
-<ion-view view-title="{{vm.venue_detail.name}} - Online Orders" ng-controller="OrderCtrl as vm" class="Customers orders reservations">
+<ion-view view-title="{{vm.venue_detail.name}} - Online Orders" ng-controller="PosOrderCtrl as vm" class="Customers orders reservations">
 
     <ion-content class="has-header orders" has-bouncing="true" overflow-scroll="true">
 
@@ -8,7 +8,7 @@
             <div class="col col-33">
                 <div id="pos-options">
                     <div id="servers">
-                        <select ng-model="vm.platform" ng-change="vm.onSelectPlatform(vm.platform)" ng-options="platform.value as platform.name for platform in vm.platforms">
+                        <select disabled ng-model="vm.platform" ng-change="vm.onSelectServer(vm.platform)" ng-options="server1.value as server1.name for server1 in vm.platforms">
                                 </select>
                     </div>
                     <div id="order-type">
@@ -37,7 +37,7 @@
                             <a class="item ">
                                 <!--  <span ng-show="customer.new  == 0" class="badge badge-energized new-label">New</span> -->
                                 <h3><strong>{{ order1.first_name }} {{ order1.last_name }}</strong> ( {{order1.mobile_number }})</h3>
-                                <p ng-hide="order1.kot_unique_id != null"> Order # {{order1.order_id}} <time class="order-time">  {{order1.created_at | moment: 'format': 'MMM Do YYYY, h:mm:ss a'}}  </time> </p>
+                                <p> Order # {{order1.kot_unique_id}} <time class="order-time">  {{order1.created_at | moment: 'format': 'MMM Do YYYY, h:mm:ss a'}}  </time> </p>
                                 <i class="icon ion-ios-arrow-right"></i>
                                 <!-- <span ng-show="order1.new  == 0" ng-click="vm.change_status(order1.order_id)" class="badge badge-energized new-label">New</span> -->
                                 <span class="status placed_status" ng-show="order1.order_status == 0">{{vm.OrderStatus(order1.order_status)}}</span>
@@ -59,7 +59,7 @@
                     <div id="tabs">
                         <button class="tab" ng-click="vm.tab = 1" ng-class="{
                                         active: vm.tab === 1
-                                    }">Order # {{vm.order.order_id}}</button>
+                                    }">Order # {{vm.order.kot_unique_id}}</button>
                         <button class="tab" ng-click="vm.tab = 2" ng-class="{
                                         active: vm.tab === 2
                                     }">Status
@@ -98,11 +98,11 @@
 
                                             </div>
 
-                                            <div ng-show="vm.order.shipping_type==='pickup'" class="col col-50 ">
+                                            <div ng-show="vm.order.shipping_type==='dine-in'" class="col col-50 ">
                                                 <h2>{{ vm.order.first_name }} {{ vm.order.last_name }}</h2>
                                                 <p><span>Phone No</span> : {{vm.order.mobile_number}} </p>
                                                 <p><span>Email</span> : {{vm.order.email}} </p>
-                                                <h2 class="pickup ">Pickup</h2>
+                                                <h2 class="pickup ">Dine In</h2>
                                             </div>
                                             <div class="col col-50">
 
@@ -219,7 +219,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="item in vm.order.items">
+                                                <tr ng-repeat="item in vm.order.order_detail">
                                                     <td class="align-left">
 
                                                         {{ item.menu_item_name}} ({{item.price_title}})
@@ -313,7 +313,7 @@
                                             <span class="placed-at"> {{vm.order.created_at | moment: 'format': 'MMM Do YYYY, h:mm:ss a' }}</span>
                                             <i ng-if="vm.OrderStatus(vm.order.order_status) && vm.orderStatusData.order_placed" class="icon ion-checkmark-round order_status_checked"></i>
                                         </li>
-                                        <ion-radio ng-show="vm.order.order_status <= 1" class="item item-icon-right" name="status" value="1" ng-model="vm.checked" ng-click="vm.onclickstatus(vm.order.order_id, 1)">
+                                        <ion-radio class="item item-icon-right" name="status" value="1" ng-model="vm.checked" ng-click="vm.onclickstatus(vm.order.order_id, 1)">
                                             <i class="order-status-icon icon ion-close-circled "></i> Reject
                                             <i ng-if="vm.OrderStatus(vm.order.order_status) && vm.orderStatusData.reject" class="icon order_status_checked  ion-checkmark-round"></i>
                                         </ion-radio>

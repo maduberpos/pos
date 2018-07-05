@@ -808,7 +808,7 @@
                 order.checkin_id = CHECKIN_ID;
                 order.cashin_id = cashin_id;
                 order.business_day_id = business_day;
-                order.status = 5;
+                order.status = 3;
                 order.is_payment_confirmed = 1;
                 console.log(LocalStorage.get('selected_customer'));
                 order.customer_detail = LocalStorage.get('selected_customer');
@@ -1037,7 +1037,7 @@
             order.checkin_id = CHECKIN_ID;
             order.cashin_id = cashin_id;
             order.business_day_id = business_day;
-            order.status = 5;
+            order.status = 3;
             order.is_payment_confirmed = 1;
             console.log(LocalStorage.get('selected_customer'));
             order.customer_detail = LocalStorage.get('selected_customer');

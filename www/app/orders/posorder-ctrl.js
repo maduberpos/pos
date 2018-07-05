@@ -356,6 +356,41 @@
             });
         }
 
+        vm.update_payment_method = function(payment_method) {
+            loading.show();
+            var data = {
+                order_id: vm.order.order_id,
+                payment_method: payment_method
+            }
+            OrderServices.update_payment_method(data).then(function(data) {
+                loading.hide();
+                changeorder();
+            }, function(error) {
+                loading.hide();
+            });
+        }
+        vm.discountRate = 0;
+
+        vm.applyDiscount = function() {
+            var data = {
+                order_id: vm.order.order_id,
+                discountRate: vm.discountRate,
+            };
+            loading.show();
+            OrderServices.update_discount(data).then(function(data) {
+                // vm.order.amount = vm.order.amount - discount;
+                if (data.data.status === false) {
+                    ionicToast.show(data.data.msg, 'middle', false, 90000);
+                }
+                vm.order.discountRate = vm.discountRate;
+                // vm.order.discount = discount;
+                loading.hide();
+                changeorder();
+            }, function(error) {
+                loading.hide();
+            })
+        }
+
         // update estimated Time 
         vm.update_estimated_time = function(estimated_time) {
             loading.show();
