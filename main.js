@@ -3,6 +3,8 @@ const { app, BrowserWindow } = require('electron')
 const { exec } = require('child_process')
 const path = require('path')
 const url = require('url')
+const updater = require('./updater')
+
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
 
@@ -21,12 +23,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({ width: 1200, height: 800 })
 
     //and load the index.html of the app.
-    //mainWindow.loadURL('www/index.html')
-    // mainWindow.loadURL(url.format({
-    //     pathname: path.join(__dirname, 'www/index.html'),
-    //     protocol: 'file:',
-    //     slashes: false
-    //   }))
+    
     var url = 'file://' + __dirname + '/www/index.html';
     var Args = process.argv.slice(2);
     Args.forEach(function(val) {
@@ -59,6 +56,8 @@ function createWindow() {
     };
     // 
 
+    // Check for update after x seconds
+  setTimeout( updater.check, 2000)
 }
 
 // This method will be called when Electron has finished

@@ -51,7 +51,7 @@
                     number_of_prints = LocalStorage.get('kot_printer_detail').no_of_prints
                 }
                     for (var j = 1; j <= number_of_prints; j++) {
-                        currentWebContents.print({ silent: true, deviceName: printer_name, printBackground: true });
+                        currentWebContents.print({ silent: false, deviceName: printer_name, printBackground: false });
                     }
                 
                 $timeout(function() {

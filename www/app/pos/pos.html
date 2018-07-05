@@ -269,7 +269,7 @@
                 </div>
             </div>
         </div>
-        <div id="pos-bill-print" style="display: none;">
+        <div id="pos-bill-print" style="display: block;">
             <p style="text-align: center;">
                 <img class="printer-logo" ng-src="{{vm.venue_detail.pos_receipt_logo}}" />
             </p>
@@ -282,12 +282,15 @@
             </p>
             <!--End Invoice Mid-->
 
-
-            <br>
             <table>
-                <thead>
-                    <h2 style="text-align: center;margin: 0;">Order # {{vm.cart.kot_unique_id}}</h2>
-                    <h6 style="text-align: center;margin: 0;">Platform : {{ vm.cart.platform }}</h6>
+                    <tr>
+                        <td class="text-left">
+                                <h2 style="text-align: center;margin: 0;">Order # {{vm.cart.kot_unique_id}}</h2>
+                        </td>
+                        <td class="text-right">
+                                <h6 style="text-align: center;margin: 0;">Platform : {{ vm.cart.platform }}</h6>
+                        </td>
+                     </tr>   
                     <tr>
                         <td class="text-left" ng-show="vm.cart.order_type != ''" style=" padding: 3px; width:50%;">Order Type : {{vm.cart.order_type}}</td>
                         <td class="text-right" ng-show="vm.server_name != ''" style=" padding: 3px; width:50%;">Server : {{vm.server_name}}</td>
@@ -301,7 +304,7 @@
                         <td class="text-right" ng-show="vm.cart.table_id != '0'" style=" padding: 3px; width:50%;">Table no # {{vm.cart.table_id}} </td>
                     </tr>
 
-                </thead>
+                
             </table>
 
 
@@ -442,7 +445,7 @@
                             <td style="
                          padding: 3px;" class="payment">
                                 <h2 style="font-size: 12px;" class="text-right"> {{vm.exact_amount | number :0}}</h2>
-                            </td>t
+                            </td>
                         </tr>
                         <tr class="tabletitle">
 
@@ -453,7 +456,7 @@
                             <td style="
                          padding: 3px;" class="payment">
                                 <h2 style="font-size: 12px;" class="text-right"> {{vm.return_amount | number :0}}</h2>
-                            </td>t
+                            </td>
                         </tr>
                         <tr>
                             <td>
@@ -469,11 +472,11 @@
 
                 <table ng-show="vm.cart.order_type === 'delivery'">
                     <thead>
-                        <h3 ng-show="vm.cart.order_type === 'delivery'" style="text-align: center;margin: 0;">Customer</h3>
+                       <tr>
+                           <td> <h3 ng-show="vm.cart.order_type === 'delivery'" style="text-align: center;margin: 0;">Customer</h3></td>
+                        </tr>
                         <tr>
                             <td style=" padding: 3px; width:50%;">Name : {{vm.selected_customer.first_name}} {{vm.selected_customer.last_name}} </td>
-
-
                         </tr>
                         <!-- <tr>
                         <td style=" padding: 3px; width:50%;">email : </td>
