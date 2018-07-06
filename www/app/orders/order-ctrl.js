@@ -21,6 +21,8 @@
         vm.tab = 1;
         vm.venue_detail = setting.venue_setting();
         vm.page = 0;
+        vm.bill_print = {};
+        vm.kot_print = {};
         vm.order_type = [{
             id: 0,
             type: "Filter by type",
@@ -95,7 +97,8 @@
         }
 
         function activate() {
-
+            vm.kot_print =  LocalStorage.get('kot_printer_detail');
+            vm.bill_print = LocalStorage.get('billing_printer_detail');
             vm.page = 0;
             vm.kot_time = '30';
             if (PosServices.kot_list()) {

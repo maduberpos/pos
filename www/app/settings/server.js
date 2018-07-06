@@ -27,7 +27,7 @@ console.log(io.sockets.clients().length)
 require('dns').lookup(require('os').hostname(), function(err, add, fam) {
 
     console.log(add);
-    server.listen(3000, add, function() {
+    server.listen(3000, '192.168.100.14', function() {
         console.log(server.address({ port: 3000, family: 'IPv4', address: add }));
         // console.log("Listening on PORT " + 8080);
     })

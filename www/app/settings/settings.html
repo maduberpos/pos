@@ -49,11 +49,11 @@
                     <div class="clear clearfix"></div>
                     <label class="item item-input">
 				    <span class="input-label">Header</span>
-				    <input type="text" class="input-text" ng-model="vm.billing_printer.printer_header">
+				    <textarea rows="5" class="input-text" ng-model="vm.billing_printer.printer_header"></textarea>
 				  </label>
                     <label class="item item-input">
 				    <span class="input-label">Footer</span>
-				    <input type="text" class="input-text" ng-model="vm.billing_printer.printer_footer">
+				    <textarea  rows="5" class="input-text" ng-model="vm.billing_printer.printer_footer"></textarea>
                   </label>
                     <div class="item text-center">
                         <button class="button button-balanced" ng-click="vm.save_printer_detail('billing_printer')">Save Billing Printer</button>
@@ -83,11 +83,11 @@
                     <div class="clear clearfix"></div>
                     <label class="item item-input">
 					<span class="input-label">Header</span>
-					<input type="text" class="input-text" ng-model="vm.kot_printer.printer_header">
+					<textarea  rows="5" class="input-text" ng-model="vm.kot_printer.printer_header"></textarea>
 				</label>
                     <label class="item item-input">
 					<span class="input-label">Footer</span>
-					<input type="text" class="input-text" ng-model="vm.kot_printer.printer_footer">
+					<textarea  rows="5" class="input-text" ng-model="vm.kot_printer.printer_footer"></textarea>
                 </label>
                     <div class="item text-center">
                         <button class="button button-balanced" ng-click="vm.save_printer_detail('kot_printer')">Save Kot Printer</button>
@@ -155,16 +155,17 @@
                 <div class="printer-detail-header">
                     <h2>Server Configuration</h2>
                 </div>
-                <span>Connect your kot and waiter app with <strong>{{vm.ip}}</strong> </span><br>
+                <br>
+                <span>Connect your kot and waiter app with <strong>192.168.10.7</strong> </span><br>
                 <button class="button button-balanced" ng-click="vm.startServer()">
             Run Server
           </button>
                 <button class="button button-assertive">
             Stop Server
           </button>
-                <button class="button" ng-click="vm.checkConnection()">
+                <!-- <button class="button" ng-click="vm.checkConnection()">
             check Server connection
-          </button>
+          </button> -->
             </div>
     </ion-content>
 </ion-view>

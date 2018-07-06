@@ -160,9 +160,10 @@
                                     if (data.val() >= LocalStorage.get('order_notification')) {
                                         LocalStorage.add('order_notification', Date.now())
                                         notificationService.OrderNotification();
-
-                                        noise.play()
-
+                                        for (var i = 1; i <= 3; i++) {
+                                            noise.play();
+                                            noise.play();
+                                        }
                                     }
                                 }
                             });
@@ -351,7 +352,7 @@
             vm.ip = LocalStorage.get('ip_address');
 
             vm.ip = String(vm.ip);
-            var myIoSocket = io.connect('http://' + vm.ip + ':3000');
+            var myIoSocket = io.connect('http://192.168.100.14:3000');
             //https://mjachatapp-danial326.c9users.io (cloud9 server link)
             var mySocket = socketFactory({
                 ioSocket: myIoSocket

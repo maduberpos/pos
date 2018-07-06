@@ -3,9 +3,9 @@
     angular.module('app')
         .controller("PosOrderCtrl", PosOrderCtrl);
 
-    PosOrderCtrl.$inject = ["$scope", '$window', "configuration", "PrinterServices", "setting", "OrderServices", "$ionicModal", "loading", 'LocalStorage', '$ionicPopup', '$ionicTabsDelegate', '$ionicScrollDelegate', 'currentUser'];
+    PosOrderCtrl.$inject = ["$scope", '$window', "configuration", "CHECKPIN", "PrinterServices", "setting", "OrderServices", "$ionicModal", "loading", 'LocalStorage', '$ionicPopup', '$ionicTabsDelegate', '$ionicScrollDelegate', 'currentUser'];
 
-    function PosOrderCtrl($scope, $window, configuration, PrinterServices, setting, OrderServices, $ionicModal, loading, LocalStorage, $ionicPopup, $ionicTabsDelegate, $ionicScrollDelegate, currentUser) {
+    function PosOrderCtrl($scope, $window, configuration, CHECKPIN, PrinterServices, setting, OrderServices, $ionicModal, loading, LocalStorage, $ionicPopup, $ionicTabsDelegate, $ionicScrollDelegate, currentUser) {
         var vm = this;
 
         vm.venue_detail = setting.venue_setting();
@@ -356,6 +356,41 @@
             });
         }
 
+        vm.update_payment_method = function(payment_method) {
+            loading.show();
+            var data = {
+                order_id: vm.order.order_id,
+                payment_method: payment_method
+            }
+            OrderServices.update_payment_method(data).then(function(data) {
+                loading.hide();
+                changeorder();
+            }, function(error) {
+                loading.hide();
+            });
+        }
+        vm.discountRate = 0;
+
+        vm.applyDiscount = function() {
+            var data = {
+                order_id: vm.order.order_id,
+                discountRate: vm.discountRate,
+            };
+            loading.show();
+            OrderServices.update_discount(data).then(function(data) {
+                // vm.order.amount = vm.order.amount - discount;
+                if (data.data.status === false) {
+                    ionicToast.show(data.data.msg, 'middle', false, 90000);
+                }
+                vm.order.discountRate = vm.discountRate;
+                // vm.order.discount = discount;
+                loading.hide();
+                changeorder();
+            }, function(error) {
+                loading.hide();
+            })
+        }
+
         // update estimated Time 
         vm.update_estimated_time = function(estimated_time) {
             loading.show();
@@ -629,29 +664,32 @@
         }
         vm.cancelOrder = function(order_id) {
             var data = {
-                order_id: order_id,
-                status: 1,
-                user_id: LocalStorage.get('USER').user_id,
-                business_day_id: LocalStorage.get('DAYSTART').id,
-                cashin_id: LocalStorage.get('cashin_id')
-            }
-            $ionicPopup.prompt({
-                title: 'Enter your secret PIN',
-                subTitle: '',
-                inputType: 'password',
-                inputPlaceholder: 'Your password'
-            }).then(function(res) {
-                console.log(res);
-                if (parseInt(res) === LocalStorage.get('USER').pin) {
-                    OrderServices.update_order_status(data).then(function(res) {
-                        // alert('Order has been cancelld');
-                        activate();
-                    });
-                } else {
-
-                    alert('wrong PIN');
+                    order_id: order_id,
+                    status: 1,
+                    user_id: LocalStorage.get('USER').user_id,
+                    business_day_id: LocalStorage.get('DAYSTART').id,
+                    cashin_id: LocalStorage.get('cashin_id')
                 }
-            });
+                // $ionicPopup.prompt({
+                //     title: 'Enter your secret PIN',
+                //     subTitle: '',
+                //     inputType: 'password',
+                //     inputPlaceholder: 'Your password'
+                // }).then(function(res) {
+                //     console.log(res);
+                //     if (parseInt(res) === LocalStorage.get('USER').pin) {
+                //         OrderServices.update_order_status(data).then(function(res) {
+                //             // alert('Order has been cancelld');
+                //             activate();
+                //         });
+                //     } else {
+
+            //         // alert('wrong PIN');
+            //     }
+
+            // });
+
+            console.log(CHECKPIN.prompt());
 
         }
 

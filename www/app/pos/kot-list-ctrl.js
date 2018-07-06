@@ -1,9 +1,9 @@
 (function() {
     'use strict';
     angular.module('app')
-        .controller('KotListCtrl', ["$rootScope", "$timeout", "PrinterServices", "$scope", "PosServices", "setting", "$location", "$ionicPopup", "$ionicModal", "$interval", "LocalStorage", KotListCtrl]);
+        .controller('KotListCtrl', ["$rootScope", "$timeout", "PrinterServices", "$scope", "Socket", "PosServices", "setting", "$location", "$ionicPopup", "$ionicModal", "$interval", "LocalStorage", KotListCtrl]);
 
-    function KotListCtrl($rootScope, $timeout, PrinterServices, $scope, PosServices, setting, $location, $ionicPopup, $ionicModal, $interval, LocalStorage) {
+    function KotListCtrl($rootScope, $timeout, PrinterServices, $scope, Socket, PosServices, setting, $location, $ionicPopup, $ionicModal, $interval, LocalStorage) {
         var vm = this;
         vm.venue_detail = setting.venue_setting();
 
@@ -34,6 +34,14 @@
                 return '';
             }
         };
+
+        Socket.on("kot_status_change", function(data) {
+            if (data) {
+                PosServices.change_kot_status(data);
+            }
+        });
+
+
         vm.kot_status = function(time) {
             var now = new Date();
             // console.log(moment.duration(moment(time).diff(moment(now))));
@@ -61,6 +69,7 @@
         vm.backToCart = function(kot_unique_id) {
             if (PosServices.getPos().items.length <= 0) {
                 var kot_order = PosServices.kot_remove(kot_unique_id);
+                console.log(kot_order);
                 kot_order.kot_status = 'back';
                 console.log(kot_order);
                 PosServices.setPos(kot_order);
@@ -139,15 +148,15 @@
         }
 
         vm.time = function(time) {
-            if(time){
+            if (time) {
                 var r_time = time.split(' ');
                 var h_m = r_time[1].split(':');
-    
+
                 return h_m[1] + ':' + h_m[1] + ' ' + r_time[2];
-            }else{
+            } else {
                 return '';
             }
-           
+
         }
 
     }
