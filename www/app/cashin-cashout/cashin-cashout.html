@@ -125,9 +125,12 @@
 
 
         <div id="cashIncashOut" style="display: none;">
-            <h1>{{vm.user.name}}</h1>
-            <h2>Cash in/out Report</h2>
-            <p>{{vm.date | date:'M/d/yyyy'}}</p>
+               <p style="text-align: center;">
+            <img class="printer-logo"   ng-src="{{vm.venue_detail.pos_receipt_logo}}" />
+            </p>
+            <h1 class="text-center">{{vm.user.name}}</h1>
+            <h2 class="text-center">Cash in/out Report</h2>
+            <p class="text-center">{{vm.date | date:'M/d/yyyy'}}</p>
 
             <table>
                 <h2>Check in/out Details </h2>
@@ -243,18 +246,20 @@
                     <thead>
                         <tr>
                             <th style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Order Type</strong></th>
-                            <th style="border: 1px solid #959595; padding: 3px; width:15%;" class="text-right"><strong>Sale</strong></th>
+                           
                             <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>Tax</strong></th>
                             <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>N.Sale</strong></th>
+                             <th style="border: 1px solid #959595; padding: 3px; width:15%;" class="text-right"><strong>Sale</strong></th>
                         </tr>
                     </thead>
 
                     <tbody>
                         <tr ng-repeat="report in vm.reports_details.sales_by_order_type">
                             <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ report.order_type }} </td>
-                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.sale | number :2 }}</td>
+                            
                             <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.tax | number :2 }}</td>
                             <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.netsale | number :2 }}</td>
+                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.sale | number :2 }}</td>
                         </tr>
 
 
@@ -267,18 +272,20 @@
                     <thead>
                         <tr>
                             <th style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Payment Method</strong></th>
-                            <th style="border: 1px solid #959595; padding: 3px; width:15%;" class="text-right"><strong>Sale</strong></th>
+                            
                             <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>Tax</strong></th>
                             <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>N.Sale</strong></th>
+                            <th style="border: 1px solid #959595; padding: 3px; width:15%;" class="text-right"><strong>Sale</strong></th>
                         </tr>
                     </thead>
 
                     <tbody>
                         <tr ng-repeat="report in vm.reports_details.sales_by_payment_method">
                             <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ report.payment_method }} </td>
-                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.sale | number :2 }}</td>
+                           
                             <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.tax | number :2 }}</td>
                             <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.netsale | number :2 }}</td>
+                             <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.sale | number :2 }}</td>
                         </tr>
 
 
@@ -292,18 +299,20 @@
                     <thead>
                         <tr>
                             <th style="border: 1px solid #959595; padding: 3px; width:60%;" class="text-left"><strong>Platform Name</strong></th>
-                            <th style="border: 1px solid #959595; padding: 3px; width:15%;" class="text-right"><strong>Sale</strong></th>
+                           
                             <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>Tax</strong></th>
                             <th style="border: 1px solid #959595; padding: 3px; width:25%;" class="text-right"><strong>N.Sale</strong></th>
+                             <th style="border: 1px solid #959595; padding: 3px; width:15%;" class="text-right"><strong>Sale</strong></th>
                         </tr>
                     </thead>
 
                     <tbody>
                         <tr ng-repeat="report in vm.reports_details.sales_by_platform">
                             <td style="border: 1px solid #959595; padding: 3px;" class="text-left">{{ report.platform }} </td>
-                            <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.sale | number :2 }}</td>
+                           
                             <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.tax | number :2 }}</td>
                             <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.netsale | number :2 }}</td>
+                             <td style="border: 1px solid #959595; padding: 3px;" class="text-right">{{ report.sale | number :2 }}</td>
                         </tr>
 
 
