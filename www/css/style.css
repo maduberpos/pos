@@ -4429,10 +4429,10 @@ thead {
 .bottom_wrapper {
     position: relative;
     width: 100%;
-    background-color: #fff;
+    background-color: rgb(244, 244, 244);
     padding: 20px 20px;
     bottom: 0;
-    border-top: 1px solid #eeeeee;
+    border-top: 1px solid #c9c9c9;
 }
 
 .bottom_wrapper .message_input_wrapper {

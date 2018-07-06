@@ -1,6 +1,6 @@
 {
   "name": "MaduberEPOS",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Maduber EPOS",
   "main": "main.js",
   "repository": "https://github.com/maduberpk/pos",
@@ -11,8 +11,7 @@
     "mac": "electron-builder -m",
     "win": "electron-builder -w",
     "build": "electron-builder -mwl",
-    "make-cert": "electron-builder create-self-signed-cert -p maduberposcert",
-    "publish": "electron-builder build -mwl -p onTagOrDraft"
+    "publish": "electron-builder build -w -p onTagOrDraft"
   },
   "build": {
     "appId": "pk.maduber.epos",
@@ -29,9 +28,11 @@
       "publish": [
         "github"
       ],
-      "certificateFile": "private/maduberposcert.p12",
+      "certificateFile": "private/certificates.p12",
+      "certificatePassword": "(maduber123!@#)",
       "verifyUpdateCodeSignature": true,
-      "publisherName": "Maduber Ltd"
+      "publisherName": "Maduber Ltd",
+      "icon": "build/icon.png"
     },
     "linux": {
       "publish": [
@@ -42,7 +43,7 @@
   },
   "devDependencies": {
     "electron": "^2.0.0",
-    "electron-builder": "^20.15.1"
+    "electron-builder": "^20.19.2"
   },
   "dependencies": {
     "electron-reload": "^1.2.2",
