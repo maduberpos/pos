@@ -64,8 +64,11 @@
 
 
         <div id="checkIncheckOut" style="display: none;">
-            <h1>{{vm.user.name}}</h1>
-            <p>{{vm.date | date:'M/d/yyyy'}}</p>
+             <p style="text-align: center;">
+            <img class="printer-logo"   ng-src="{{vm.venue_detail.pos_receipt_logo}}" />
+            </p>
+            <h1 class="text-center">{{vm.user.name}}</h1>
+            <p class="text-center">{{vm.date | date:'M/d/yyyy'}}</p>
             <table>
                 <h2>Sales Summery </h2>
 

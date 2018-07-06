@@ -1,0 +1,494 @@
+<ion-view view-title="{{vm.venue_detail.name}} - POS Orders" ng-controller="PosOrderCtrl as vm">
+
+    <ion-content class="has-header orders" has-bouncing="true">
+
+
+        <div class="row customerstyle" style="min-height: {{  vm.viewHight }};">
+
+            <div class="col col-33">
+                <div id="pos-options">
+                    <div id="servers">
+                        <select disabled ng-model="vm.platform" ng-change="vm.onSelectServer(vm.platform)" ng-options="server1.value as server1.name for server1 in vm.platforms">
+                                </select>
+                    </div>
+                    <div id="order-type">
+                        <select ng-model="vm.orderType" ng-change="vm.onSel(vm.orderType)" ng-options="o_type.slug as o_type.type for o_type in vm.order_type">
+                               </select>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="list list-inset search-box">
+                    <label class="item item-input">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input type="search"
+                           ng-model="vm.order_search"
+                           placeholder="Search"
+                           ng-change="vm.showVal(vm.order_search)">
+                           <ion-spinner icon="bubbles" class="spinner-assertive" ng-show="spinner"></ion-spinner>
+                  </label>
+
+                </div>
+
+
+                <ion-scroll id="pos-customers" overflow-scroll="false" direction="y" scrollbar-x="true" has-bouncing="true">
+                    <ul class="list">
+
+                        <li class="card" ng-repeat="order1 in vm.orders | filter:search:strict" ng-show="order1.status != 1" ng-init="vm.tab = 1" ng-class="{active: order1.order_id == vm.order.order_id}">
+                            <a class="item " ng-click="vm.viewOrderDetail(order1, vm.tab)">
+                                <!--  <span ng-show="customer.new  == 0" class="badge badge-energized new-label">New</span> -->
+                                <h3><strong>{{ order1.first_name }} {{ order1.last_name }}</strong></h3>
+                                <p> Order id {{order1.kot_unique_id}} </p>
+                                <!-- <i class="icon ion-ios-arrow-right"></i>
+                                <span class="status placed_status" ng-show="order1.order_status == 0">{{vm.OrderStatus(order1.order_status)}}</span>
+                                <span class="status reject_status" ng-show="order1.order_status == 1">{{vm.OrderStatus(order1.order_status)}}</span>
+                                <span class="status accept_status" ng-show="order1.order_status == 2">{{vm.OrderStatus(order1.order_status)}}</span>
+                                <span class="status preparing_status" ng-show="order1.order_status == 3">{{vm.OrderStatus(order1.order_status)}}</span>
+                                <span class="status delivering_status" ng-show="order1.order_status == 4">{{vm.OrderStatus(order1.order_status)}}</span>
+                                <span class="status delivered_status" ng-show="order1.order_status == 5">{{vm.OrderStatus(order1.order_status)}}</span> -->
+                            </a>
+                        </li>
+
+                    </ul>
+                    <ion-infinite-scroll ng-if="vm.noMoreItemsAvailable" on-infinite="vm.loadMore()" distance="10%"></ion-infinite-scroll>
+                </ion-scroll>
+            </div>
+
+            <div class="col col-67 text-center posorders">
+                <div class="data-content" ng-show="vm.orders.length > 0">
+
+                    <ion-scroll id="pos-customers" overflow-scroll="false" direction="y" scrollbar-x="true" has-bouncing="true">
+                        <button ng-click="vm.cancelOrder(vm.order.order_id)" class="printorder button button-small button-assertive">Cancel Order</button>
+                        <button ng-click="vm.printBill()" class="printorder button button-small button-dark">Print Order</button>
+                        <div class="posorder-content">
+                            <img class="text-center pos-order-logo" ng-src="{{vm.venue_detail.pos_receipt_logo}}" />
+                            <h2>{{vm.venue_detail.name}}</h2>
+                            <p>
+                                {{ vm.venue_detail.address1 }} {{ vm.venue_detail.address2 }} {{ vm.venue_detail.address3 }} {{ vm.venue_detail.city }}</p>
+                            <p> {{ vm.venue_detail.email }}</p>
+                            <p> {{ vm.venue_detail.phone_no }}</p>
+                            <br>
+
+                            <table style="width:100%;">
+                                <thead>
+                                    <h2 style="text-align: center;margin: 0;">Order # {{vm.order.kot_unique_id}}</h2>
+                                    <tr>
+                                        <td class="text-left" ng-show="vm.order.order_type != ''" style="border-bottom:0px !important; padding: 3px; width:50%;">Order Type : {{vm.order.order_type}}</td>
+                                        <td class="text-right" ng-repeat="rider in vm.order.riders" ng-show="vm.order.server_id === rider.id" style="border-bottom:0px !important; padding: 3px; width:50%;">Server : {{rider.name}}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left" style="border-bottom:0px !important; padding: 3px; width:50%;">Date : {{ vm.order.created_at | moment: 'format': 'MMM Do YYYY ' }}</td>
+                                        <td class="text-right" style="border-bottom:0px !important; padding: 3px; width:50%;">Time : {{ vm.order.created_at | moment: 'format': 'h:mm a' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left" style="border-bottom:0px !important; padding: 3px; width:50%;">Payment by : {{ vm.order.payment_method }}</td>
+                                        <td class="text-right" ng-show="vm.order.table_id != '0'" style="border-bottom:0px !important; padding: 3px; width:50%;">Table no # {{vm.order.table_id}} </td>
+                                    </tr>
+
+
+                                </thead>
+                            </table>
+
+                            <div id="cart">
+
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th width="50%" class="text-left">Item</th>
+                                            <th width="30%" class="text-right">Qty</th>
+                                            <th width="20%" class="text-right">Price</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in vm.order.order_detail">
+                                            <td class="align-left">
+
+                                                {{ item.menu_item_name}} ({{item.price_title}})
+                                                <div class="clear"></div>
+                                                <div class="feature">
+                                                    <!-- <span class="serving">Serving: x {{ item.serving}}</span>
+                                                <span class="deal">Deal: {{ item.deal}}</span> -->
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <ul class="item_options">
+                                                    <li ng-repeat="option in item.menu_options_object">
+                                                        <strong>{{option.option_name}}</strong>
+                                                        <div class="row" ng-if="option.option_type=='checkbox'">
+                                                            <div class="col col-80">
+                                                                <p ng-repeat="(key1, value) in option.selectedByName" ng-if="value">{{key1}}</p>
+                                                            </div>
+                                                            <div class="col col-20">
+                                                                <p ng-repeat="(key, value) in option.selectedItemPrice">+{{value | number :0}}</p>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="row" ng-if="option.option_type=='radio'">
+                                                            <div class="col col-80">
+                                                                <p>{{option.selectedByName}}</p>
+                                                            </div>
+                                                            <div class="col col-20">
+                                                                <p>+{{option.selectedItemPrice | number :0}}</p>
+                                                            </div>
+                                                            <!-- {{option.selectedByName}}
+                                                            <span class="option_item_price">+{{option.selectedItemPrice}}</span> -->
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td class="qty text-right">
+                                                {{item.quantity}}
+                                            </td>
+                                            <td class="text-right">
+                                                {{ item.discounted_price | number : 2}}
+                                                <!-- <ul class="item_options">
+                                                    <li ng-repeat="option in item.menu_options_object">
+                                                        <h1></h1>
+                                                        <div ng-if="option.option_type=='checkbox'">
+
+                                                            <span ng-repeat="(key, value) in option.selectedItemPrice" ng-if="value">
+                                                        {{value}}
+                                                        </span>
+
+                                                        </div>
+
+                                                        <div class="" ng-if="option.option_type=='radio'">
+                                                            <span class="option_item_price" ng-if="option.selectedItemPrice!=0">+{{option.selectedItemPrice}}</span>
+                                                        </div>
+                                                    </li>
+                                                </ul> -->
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td>
+
+                                            </td>
+                                            <td class="align-right bg-1">Sub Total</td>
+                                            <td class="no-right-border2">+{{vm.order.subtotal }}</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>
+
+                                            </td>
+                                            <td class="align-right bg-1">TAX ( {{vm.order.tax_rate}} %)</td>
+                                            <td class="no-right-border2">+{{vm.order.tax }}</td>
+
+                                        </tr>
+                                        <tr ng-show="vm.order.shipping_type==='delivery'">
+                                            <td class="align-right bg-1" colspan="2">Delivery Charges</td>
+                                            <td class="no-right-border2">+{{vm.order.shipping_charges}}</td>
+                                        </tr>
+                                        <tr ng-show="vm.order.discount!=='0'">
+                                            <td class="align-right bg-1" colspan="2">Discount</td>
+                                            <td class="no-right-border2">-{{vm.order.discount }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="align-right bg-1" colspan="2" style="border-bottom:0px !important;font-weight:bold;">Total</td>
+                                            <td class="no-right-border2" style="border-bottom:0px !important;font-weight:bold;">
+                                                {{vm.order.amount }}
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <br>
+                            <br>
+                            <hr>
+                            <table style="width:100%;">
+                                <thead>
+                                    <h3 style="text-align: center;margin: 0;">Customer</h3>
+                                    <tr>
+                                        <td class="text-left" style="border-bottom:0px !important; padding: 3px; width:50%;">Name : </td>
+                                        <td class="text-right" style="border-bottom:0px !important;">{{vm.order.first_name}} {{vm.order.last_name}}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left" style="border-bottom:0px !important; padding: 3px; width:50%;">Email : </td>
+                                        <td class="text-right" style="border-bottom:0px !important;">{{vm.order.email}}</td>
+                                    </tr>
+                                    <tr ng-show="vm.order.mobile_number!=''">
+                                        <td class="text-left" style="border-bottom:0px !important; padding: 3px; width:50%;">Phone : </td>
+                                        <td class="text-right" style="border-bottom:0px !important;">{{vm.order.mobile_number}}</td>
+                                    </tr>
+                                    <tr ng-hide="vm.order.address_id != 0">
+                                        <td style="border-bottom:0px !important;" ng-repeat="address in vm.order.customer_address" ng-show="address.address_id === vm.order.address_id">
+                                            Address : {{address.addressLine1}} {{address.addressLine2 }} {{address.city }}
+                                        </td>
+                                    </tr>
+
+
+                                </thead>
+                            </table>
+
+
+                            <!--End Table-->
+
+                            <div>
+                                <p class="text-center">
+                                    {{vm.bill_print_footer}}
+                                </p>
+                            </div>
+
+                            <!-- <hr>
+
+                <p class="text-center">Scan QR code for download online ordering app and enjoy amazing discount vouchers </p>
+                <br>
+                <p class="text-center"><img class="qr " src="img/qr.png"></p> -->
+                            <hr>
+                            <br>
+                            <br>
+                            <p class="text-center">Powered by www.maduber.com</p>
+                            <p class="text-center">0300 5292 723</p>
+
+                        </div>
+                </div>
+                </ion-scroll>
+            </div>
+            <div class="text-center empty_cart empty" ng-show="!vm.orders.length > 0">
+                <img src="img/empty_cart.png">
+                <h2> No POS History Found </h2>
+                <p> No history found please add order from pos section to list here . </p>
+                <a ui-sref="app.pos" class="button  button-balanced icon-right ion-arrow-right-c"> Add Now </a>
+            </div>
+        </div>
+
+        </div>
+
+
+
+        <div id="posOrder-bill-print" style="display: none; ">
+
+            <img style="width:150px; height:150px; margin: 0 50px; filter: gray; filter: grayscale(100%);" ng-src="{{vm.venue_detail.pos_receipt_logo}}" />
+
+
+            <h2 style="font-size: 14px; margin: 0; text-align: center;">{{vm.venue_detail.name}}</h2>
+            <p style="text-align: center;">
+                {{ vm.venue_detail.address1 }} {{ vm.venue_detail.address2 }} {{ vm.venue_detail.address3 }} {{ vm.venue_detail.city }}</br>
+                {{ vm.venue_detail.email }}</br>
+                {{ vm.venue_detail.phone_no }}</br>
+            </p>
+            <!--End Invoice Mid-->
+
+
+            <br>
+            <table>
+                <thead>
+                    <h2 style="text-align: center;margin: 0;">Order # {{vm.order.kot_unique_id}}</h2>
+                    <tr>
+                        <td class="text-left" ng-show="vm.order.order_type != ''" style=" padding: 3px; width:50%;">Order Type : {{vm.order.shipping_type}}</td>
+                        <!-- <td class="text-right" ng-show="vm.server_name != ''" style=" padding: 3px; width:50%;">Server : {{vm.server_name}}</td> -->
+
+                    </tr>
+                    <tr>
+                        <td class="text-left" style=" padding: 3px; width:50%;">Date : {{ vm.order.created_at | moment: 'format': 'MMM Do YYYY ' }}</td>
+                        <td class="text-right" style=" padding: 3px; width:50%;">Time : {{ vm.order.created_at | moment: 'format': 'h:mm a' }}</td>
+                    </tr>
+                    <!-- <tr>
+                    <td class="text-left" style=" padding: 3px; width:50%;">Payment by : {{ payment_method }}</td>
+                    <td class="text-right" ng-show="vm.order.table_id != '0'" style=" padding: 3px; width:50%;">Table no # {{vm.order.table_id}} </td>
+                </tr> -->
+
+
+                </thead>
+            </table>
+            <!--   ng-if="vm.order.order_type === 'delivery'" -->
+
+            <div id="table">
+                <table>
+                    <thead>
+                        <tr class="tabletitle" style="border-bottom:1px solid #959595;border-top:1px solid #959595;">
+                            <td style=" width:70%;" class="text-left">
+                                <h6>Item</h6>
+                            </td>
+                            <td style=" width:10%;" class="Hours">
+                                <h6 class="text-right"> Qty</h6>
+                            </td>
+                            <td style=" width:20%;" class="Rate">
+                                <h6 class="text-right"> S.Total</h6>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="service" ng-repeat="item in vm.order.order_detail" style="border: none;">
+                            <td class="tableitem" style=" padding: 3px;">
+                                <div class="" style="width: 100%; float:left;">
+                                    <div class="text-left">
+                                        <p style="margin:0;  font-size: 12px; float: left; width:80%;">{{ item.menu_item_name}} ({{item.price_title}})<br>
+                                            <i ng-show="item.discount" style="font-size: 9px;"> {{ item.discount }}% Off</i>
+                                        </p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p style="margin:0; font-size: 10px; float: right; width:20%;"> {{item.discounted_price | number :0}} x</p>
+
+
+
+                                    </div>
+
+
+
+                                </div>
+
+
+                                <div class="option-list" style="width: 100%; float:left;">
+                                    <div ng-repeat="option in  item.menu_options_object">
+                                        <div class="">
+                                            <strong style="font-size: 12px;"><p>{{option.option_name}}</p></strong>
+                                        </div>
+                                        <div ng-if="option.option_type=='checkbox'">
+                                            <div class="row" ng-repeat="(key, value) in option.selectedByName" ng-if="value">
+                                                <div class="" style=" float: left; width:80%;">
+                                                    <p style="margin:0;  font-size: 12px;">
+                                                        {{key }}
+                                                    </p>
+                                                </div>
+                                                <div class=" text-right" style="float: right; width:20%;">
+                                                    <p style="margin:0; font-size: 10px; ">
+                                                        <span ng-if="value.item_price!=0">+{{value.item_price | number :0}}</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="" ng-if="option.option_type=='radio'">
+                                            <div class="">
+                                                <p> {{option.selectedByName}}</p>
+                                            </div>
+                                            <div class=" text-right">
+                                                <span class="option_item_price" ng-if="option.selectedItemPrice!=0">+{{option.selectedItemPrice | number :0}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style=" vertical-align: top;  padding: 3px; margin-top: -20px;" class="tableitem text-right">{{item.quantity}}</td>
+                            <td style=" vertical-align: top;  padding: 3px;" class="tableitem text-right">
+
+                                <span>{{ item.discounted_price  | number : 2}}</span>
+                                <!-- <span>
+                                                     {{( item.discounted_price + vm.option_price_count($index)) * item.quantity | number :0 }}
+                                                 </span> -->
+
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot style="border-top: 1px solid #959595">
+                        <tr class="tabletitle" ng-show="vm.discountRate > 0 || vm.order.tax > 0">
+
+                            <td colspan="2" style="
+                     padding: 3px;" class="Rate">
+                                <h2 style="font-size: 12px;" class="text-right">Sub Total</h2>
+                            </td>
+                            <td style="
+                     padding: 3px;" class="payment">
+                                <h2 style="font-size: 12px;" class="text-right">{{vm.order.sub_total| number :0 }}</h2>
+                            </td>
+                        </tr>
+                        <tr class="tabletitle" ng-show="vm.order.tax > 0">
+
+                            <td colspan="2" style=" padding: 3px;" class="Rate">
+                                <h2 style="font-size: 12px;" class="text-right">TAX ( {{vm.order.tax_rate}} %)</h2>
+                            </td>
+                            <td style=" padding: 3px;" class="payment">
+                                <h2 style="font-size: 12px;" class="text-right">{{vm.order.tax | number :0 }}</h2>
+                            </td>
+                        </tr>
+                        <tr class="tabletitle" ng-show="vm.order.discountRate > 0">
+
+                            <td colspan="2" style=" padding: 3px;" class="Rate">
+                                <h2 style="font-size: 12px;" class="text-right">Discount ({{vm.order.discountRate}}%)</h2>
+                            </td>
+                            <td style=" padding: 3px;" class="payment">
+                                <h2 style="font-size: 12px;" class="text-right">{{vm.order.discount| number :0 }}</h2>
+                            </td>
+                        </tr>
+
+                        <tr class="tabletitle" ng-show="vm.order.shipping_type==='delivery'">
+
+                            <td colspan="2" style=" padding: 3px;" class="Rate">
+                                <h2 style="font-size: 12px;" class="text-right">Delivery Charger</h2>
+                            </td>
+                            <td style=" padding: 3px;" class="payment">
+                                <h2 style="font-size: 12px;" class="text-right">{{vm.order.shipping_charges| number :0 }}</h2>
+                            </td>
+                        </tr>
+
+                        <tr class="tabletitle">
+
+                            <td colspan="2" style="
+                     padding: 3px;" class="Rate">
+                                <h2 style="font-size: 12px;" class="text-right">Total</h2>
+                            </td>
+                            <td style="
+                     padding: 3px;" class="payment">
+                                <h2 style="font-size: 12px;" class="text-right"> {{vm.order.amount | number :0}}</h2>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <p ng-hide="vm.order.additional_instruction===null">Note: {{vm.order.additional_instruction}}</p>
+                            </td>
+
+                        </tr>
+
+
+                    </tfoot>
+                </table>
+                <hr ng-show="vm.order.shipping_type==='delivery'">
+
+                <table ng-show="vm.order.shipping_type==='delivery'">
+                    <thead>
+                        <h3 ng-show="vm.order.shipping_type==='delivery'" style="text-align: center;margin: 0;">Customer</h3>
+                        <tr>
+                            <td style=" padding: 3px; width:50%;">Name : {{ vm.order.first_name }} {{ vm.order.last_name }} </td>
+
+
+                        </tr>
+                        <!-- <tr>
+                    <td style=" padding: 3px; width:50%;">email : </td>
+                    <td class="text-right">{{vm.order.email}}</td>
+                </tr> -->
+                        <tr>
+                            <td style=" padding: 3px; width:50%;">Phone : {{vm.order.mobile_number}} </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                Address : {{vm.order.customer_address.title}} {{vm.order.customer_address.addressLine1}} {{vm.order.customer_address.addressLine2}} {{vm.order.customer_address.city}} {{vm.order.customer_address.postal_code}}
+                            </td>
+                        </tr>
+
+
+                    </thead>
+                </table>
+
+
+                <!--End Table-->
+
+                <div>
+                    <p class="text-center">
+                        {{vm.bill_print_footer}}
+                    </p>
+                </div>
+
+                <!-- <hr>
+
+                <p class="text-center">Scan QR code for download online ordering app and enjoy amazing discount vouchers </p>
+                <br>
+                <p class="text-center"><img class="qr " src="img/qr.png"></p> -->
+
+                <hr>
+                <p class="text-center">Powered by www.maduber.com</p>
+                <p class="text-center">0300 5292 723</p>
+
+            </div>
+            <!--End InvoiceBot-->
+            <!--End InvoiceBot-->
+        </div>
+
+    </ion-content>
+</ion-view>

@@ -26,7 +26,7 @@
                         submenu: [
                             { role: 'reload' },
                             { role: 'forcereload' },
-                             { role: 'toggledevtools' },
+                            { role: 'toggledevtools' },
                             { type: 'separator' },
                             { role: 'resetzoom' },
                             { role: 'zoomin' },
@@ -160,9 +160,10 @@
                                     if (data.val() >= LocalStorage.get('order_notification')) {
                                         LocalStorage.add('order_notification', Date.now())
                                         notificationService.OrderNotification();
-
-                                        noise.play()
-
+                                        for (var i = 1; i <= 3; i++) {
+                                            noise.play();
+                                            noise.play();
+                                        }
                                     }
                                 }
                             });

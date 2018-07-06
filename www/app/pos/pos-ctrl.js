@@ -797,29 +797,54 @@
                 var olderDate = moment(now).add(vm.kot_time, 'minutes').toDate();
                 PosServices.set_kot_time(olderDate);
                 PosServices.save_kot();
-                vm.kot_modal.hide();
-                PosServices.empty();
+                var order = PosServices.getPos();
+                var cashin_id = LocalStorage.get('cashin_id');
+                var CHECKIN_ID = LocalStorage.get('CHECKIN_ID');
+                var business_day = LocalStorage.get('DAYSTART').id;
+                // PosServices.set_customer_detail(LocalStorage.get('selected_customer'));
+                var total_order_cost = 0;
+                // total_order_cost = parseInt(order.total) + LocalStorage.get('TOTAL_SALE');
+                // LocalStorage.add('TOTAL_SALE', parseInt(total_order_cost));
+                order.checkin_id = CHECKIN_ID;
+                order.cashin_id = cashin_id;
+                order.business_day_id = business_day;
+                order.status = 3;
+                order.is_payment_confirmed = 1;
+                console.log(LocalStorage.get('selected_customer'));
+                order.customer_detail = LocalStorage.get('selected_customer');
+                PosServices.setPos(order);
+                // console.log(order);
+                PosOrderService.saveOrder(order);
 
-                vm.save_kot = 'KOT';
-                vm.cart = PosServices.getPos();
-                vm.items = vm.cart.items;
-                vm.getTotalItems = PosServices.getTotalItems();
-                vm.getSubTotal = PosServices.getSubTotal();
-                vm.tax = PosServices.getTax();
-                init();
-                vm.discountRate = 0;
-                PosServices.setDiscountRate(vm.discountRate);
-                vm.discount = PosServices.getDiscount();
-                vm.totalCost = PosServices.totalCost();
-                $ionicScrollDelegate.$getByHandle('CartItems').scrollBottom();
-                $scope.hold_order_list = PosServices.hold_order_list();
-                vm.table_id = 0;
-                vm.additional_instruction = '';
-                vm.note = '';
-                PosServices.setOrderType(vm.orderType);
-                PosServices.set_server(vm.server_id);
-                $scope.customers = {};
-                vm.selected_customer = setWalkingCustomer();
+                // PosServices.save_kot();
+
+                var kotBillPrint = angular.element(document.querySelector('#kot-bill-print'));
+                PrinterServices.kotPrint(kotBillPrint[0].innerHTML)
+                    .then(function() {
+                        vm.kot_modal.hide();
+                        PosServices.empty();
+
+                        vm.save_kot = 'KOT';
+                        vm.cart = PosServices.getPos();
+                        vm.items = vm.cart.items;
+                        vm.getTotalItems = PosServices.getTotalItems();
+                        vm.getSubTotal = PosServices.getSubTotal();
+                        vm.tax = PosServices.getTax();
+                        init();
+                        vm.discountRate = 0;
+                        PosServices.setDiscountRate(vm.discountRate);
+                        vm.discount = PosServices.getDiscount();
+                        vm.totalCost = PosServices.totalCost();
+                        $ionicScrollDelegate.$getByHandle('CartItems').scrollBottom();
+                        $scope.hold_order_list = PosServices.hold_order_list();
+                        vm.table_id = 0;
+                        vm.additional_instruction = '';
+                        vm.note = '';
+                        PosServices.setOrderType(vm.orderType);
+                        PosServices.set_server(vm.server_id);
+                        $scope.customers = {};
+                        vm.selected_customer = setWalkingCustomer();
+                    });
             }
         };
         $rootScope.$on('kotBack', function(event, data) {
@@ -1012,12 +1037,12 @@
             order.checkin_id = CHECKIN_ID;
             order.cashin_id = cashin_id;
             order.business_day_id = business_day;
-            order.status = 5;
+            order.status = 3;
             order.is_payment_confirmed = 1;
             console.log(LocalStorage.get('selected_customer'));
             order.customer_detail = LocalStorage.get('selected_customer');
             PosServices.setPos(order);
-            console.log(order);
+            // console.log(order);
             PosOrderService.saveOrder(order);
             if (vm.sendToKitchen) {
                 var now = new Date();
