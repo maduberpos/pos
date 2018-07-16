@@ -23,7 +23,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({ width: 1200, height: 800 })
 
     //and load the index.html of the app.
-    
+
     var url = 'file://' + __dirname + '/www/index.html';
     var Args = process.argv.slice(2);
     Args.forEach(function(val) {
@@ -54,10 +54,10 @@ function createWindow() {
         e.returnValue = answer; // this will *prevent* the closing no matter what value is passed
         if (answer) { win.destroy(); } // this will close the app
     };
-    // 
-
     // Check for update after x seconds
-  setTimeout( updater.check, 2000)
+    setTimeout(updater.check, 2000)
+
+
 }
 
 // This method will be called when Electron has finished
@@ -65,16 +65,19 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow)
 
+
+
+
 // Quit when all windows are closed.
-// app.on('window-all-closed', function() {
-//     // On OS X it is common for applications and their menu bar
-//     // to stay active until the user quits explicitly with Cmd + Q
+app.on('window-all-closed', function() {
+    // On OS X it is common for applications and their menu bar
+    // to stay active until the user quits explicitly with Cmd + Q
 
 
-//     if (process.platform !== 'darwin') {
-//         app.quit()
-//     }
-// })
+    if (process.platform !== 'darwin') {
+        app.quit()
+    }
+})
 
 // Prevent Closing when work is running
 
@@ -84,6 +87,8 @@ app.on('activate', function() {
     // dock icon is clicked and there are no other windows open.
     if (mainWindow === null) {
         createWindow()
+            // Check for update after x seconds
+
     }
 })
 

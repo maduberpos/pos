@@ -100,10 +100,11 @@
                         i = vm.lengthOfItems + 1;
                     }
                 }
-
-                for (var i = 0; i < vm.order.order_detail.length; i++) {
-                    if (vm.order.order_detail[i].menu_options_object != null)
-                        vm.order.order_detail[i].menu_options_object = JSON.parse(vm.order.order_detail[i].menu_options_object);
+                if (vm.order.order_detail.length) {
+                    for (var i = 0; i < vm.order.order_detail.length; i++) {
+                        if (vm.order.order_detail[i].menu_options_object != null)
+                            vm.order.order_detail[i].menu_options_object = JSON.parse(vm.order.order_detail[i].menu_options_object);
+                    }
                 }
                 vm.order_id = vm.order.order_id;
                 loading.hide();
