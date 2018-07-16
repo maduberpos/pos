@@ -1,9 +1,9 @@
 {
   "name": "MaduberEPOS",
-  "version": "1.0.5",
+  "version": "1.0.8",
   "description": "Maduber EPOS",
   "main": "main.js",
-  "repository": "https://github.com/maduberpk/pos",
+  "repository": "https://github.com/maduberpos/pos.git",
   "author": "Maduber Ltd",
   "homepage": "https://www.maduber.pk",
   "scripts": {
