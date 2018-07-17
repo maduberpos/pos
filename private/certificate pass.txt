@@ -1,6 +1,0 @@
-certificate pass 
-
-(maduber123!@#)
-
-
-// "make-cert": "electron-builder create-self-signed-cert -p certificates.p12",
